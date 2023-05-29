@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Center from "@/components/Center";
 
 const StyleHeader = styled.header`
     background-color: #222;
-    
 `;
 
 const Logo = styled(Link)`
     color: #fff;
     text-decoration:none;
+    position:relative;
+    z-index: 3;
 `;
 
 const Wrapper = styled.div`
@@ -26,7 +27,6 @@ const StyledNav = styled.nav`
 const NavLink = styled(Link)`
     color: #aaa;
     text-decoration:none;
-
 `;
 
 export default function Header(){
