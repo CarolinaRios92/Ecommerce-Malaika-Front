@@ -3,7 +3,7 @@ import Center from "./Center";
 import Button from "./Button";
 import ButtonLink from "./ButtonLink";
 import CartIcon from "./icons/CartIcon";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "./CartContext";
 
 const Bg = styled.div`
