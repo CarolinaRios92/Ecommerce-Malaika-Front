@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/components/CartContext";
 import axios from "axios";
 import Table from "@/components/Table";
+import Input from "@/components/Input";
 
 const ColumnsWrapper = styled.div`
     display: grid;
@@ -47,6 +48,8 @@ const QuantityLabel = styled.span`
 export default function CartPage(){
     const {cartProducts, addProduct, removeProduct} = useContext(CartContext);
     const [products, setProducts] = useState([]);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
 
     useEffect(() => {
         if(cartProducts?.length > 0){
@@ -54,6 +57,8 @@ export default function CartPage(){
             .then(response => {
                 setProducts(response.data);
             })
+        } else {
+            setProducts([]);
         }
     }, [cartProducts]);
 
@@ -126,7 +131,31 @@ export default function CartPage(){
                     {!!cartProducts?.length && (
                         <Box>
                         <h2>Información de la Compra</h2>
-                        <Button black={1} block={1}>Comprar Ahora</Button>
+
+                        <form method="post" action="/api/checkout">
+                        
+                            <Input 
+                                type="text" 
+                                value={name} 
+                                name="name"
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Name"/>
+
+                            <Input 
+                                type="text" 
+                                value={email} 
+                                name="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"/>
+                            
+                            <input 
+                                type="hidden"
+                                name="products" 
+                                value={cartProducts.join(",")}/>
+                                
+                            <Button black={1} block={1} type="submit">Comprar Ahora</Button>
+
+                        </form>
                     </Box>
                     )}
                 </ColumnsWrapper>
