@@ -1,7 +1,12 @@
+import { CartContextProvider } from "@/components/CartContext"
 import "../styles/styles.css"
 
 export default function App({ Component, pageProps }) {
   return (
-      <Component {...pageProps} />
+    <>
+      <CartContextProvider>
+        <Component {...pageProps} />
+      </CartContextProvider>
+    </>
   )
 }

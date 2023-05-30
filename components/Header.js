@@ -1,6 +1,8 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Center from "@/components/Center";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 
 const StyleHeader = styled.header`
     background-color: #222;
@@ -30,6 +32,8 @@ const NavLink = styled(Link)`
 `;
 
 export default function Header(){
+    const {cartProducts} = useContext(CartContext)
+
     return(
         <StyleHeader>
             <Center>
@@ -43,7 +47,7 @@ export default function Header(){
                         <NavLink href={"/products"}>Productos</NavLink>
                         <NavLink href={"/categories"}>Categorias</NavLink>
                         <NavLink href={"/account"}>Tu Cuenta</NavLink>
-                        <NavLink href={"/cart"}>Carrito</NavLink>
+                        <NavLink href={"/cart"}>Carrito ({cartProducts.length})</NavLink>
                     </StyledNav>
                 </Wrapper>
                 
