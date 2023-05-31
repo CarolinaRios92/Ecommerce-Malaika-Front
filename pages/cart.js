@@ -50,6 +50,7 @@ export default function CartPage(){
     const [products, setProducts] = useState([]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         if(cartProducts?.length > 0){
@@ -61,6 +62,15 @@ export default function CartPage(){
             setProducts([]);
         }
     }, [cartProducts]);
+
+    useEffect(() => {
+        if(typeof window === "undefined"){
+            return;
+        }
+        if(window?.location.href.includes("approved")){
+            setIsSuccess(true);
+        }
+    }, []);
 
     function moreOfThisProduct(id){
         addProduct(id);
@@ -74,6 +84,35 @@ export default function CartPage(){
     for(const productId of cartProducts){
         const price = products.find(product => product._id === productId)?.price || 0;
         total += price;
+    }
+
+    async function goToPayment(){
+        const response = await axios.post("/api/checkout", {
+            name, 
+            email,
+            cartProducts,
+        });
+        if(response.data.url){
+            window.location = response.data.url;
+        }
+    }
+
+    console.log(isSuccess);
+    
+    if(isSuccess){
+        return (
+            <>
+                <Header />
+                    <Center>
+                        <ColumnsWrapper>
+                            <Box>
+                                <h1>Gracias por tu compra!</h1>
+                                <p>Te enviaremos por email los datos de tu compra</p>
+                            </Box>
+                        </ColumnsWrapper>
+                    </Center>
+            </>
+        )
     }
 
     return (
@@ -131,9 +170,6 @@ export default function CartPage(){
                     {!!cartProducts?.length && (
                         <Box>
                         <h2>Información de la Compra</h2>
-
-                        <form method="post" action="/api/checkout">
-                        
                             <Input 
                                 type="text" 
                                 value={name} 
@@ -147,15 +183,13 @@ export default function CartPage(){
                                 name="email"
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Email"/>
-                            
-                            <input 
-                                type="hidden"
-                                name="products" 
-                                value={cartProducts.join(",")}/>
                                 
-                            <Button black={1} block={1} type="submit">Comprar Ahora</Button>
-
-                        </form>
+                            <Button 
+                                black={1} 
+                                block={1} 
+                                onClick={goToPayment}>
+                                    Comprar Ahora
+                            </Button>
                     </Box>
                     )}
                 </ColumnsWrapper>
