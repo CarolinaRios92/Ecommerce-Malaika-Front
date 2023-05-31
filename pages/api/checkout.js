@@ -13,7 +13,7 @@ export default async function handler(req, res){
         return
     }
 
-    const URL = "http://localhost:3000/cart"
+    const URL = "https://05ed-200-126-160-143.ngrok-free.app"
     
     const {name, email, cartProducts} = req.body;
 
@@ -48,14 +48,12 @@ export default async function handler(req, res){
             items: line_items,
             auto_return: "approved",
             back_urls: {
-                success: `${URL}`,
-                failure: `${URL}`,
+                success: `${URL}/cart`,
+                failure: `${URL}/cart`,
             },
-            
+            notification_url: `${URL}/api/notify`,
             metadata: {orderId: orderDoc._id.toString(), test:"ok"},
         });
-
-        console.log(result);
 
         res.status(200).send({url: result.body.init_point});
     } catch (error) {
