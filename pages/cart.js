@@ -10,7 +10,10 @@ import Input from "@/components/Input";
 
 const ColumnsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.3fr .7fr;
+    grid-template-columns: 1fr;
+    @media screen and (min-width: 768px){
+        grid-template-columns: 1.3fr .7fr;
+    }
     gap: 40px;
     margin-top: 40px;
 `;
@@ -26,22 +29,37 @@ const ProductInfoCell = styled.td`
 `;
 
 const ProductImageBox = styled.div`
-    width: 100px;
-    height: 100px;
-    padding: 10px;
+    width: 120px;
+    height: 120px;
+    padding: 2px;
     border: 1px solid rgba(0,0,0,.1);
     display:flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-        img{
-        max-width: 80px;
-        max-height: 80px;
+    margin-bottom: 5px;
+    img{
+        max-width: 110px;
+        max-height: 110px;
+    }
+    @media screen and (min-width: 768){
+        padding: 10px;
+        width: 100px;
+        height: 100px;
+        img {
+            max-width: 80px;
+            max-height: 80px;
+        }
     }
 `;
 
 const QuantityLabel = styled.span`
     padding: 0 3px;
+    display: block;
+    @media screen and (min-width: 768px){
+        display: inline-block;
+        padding: 0 10px;
+    }
 `;
 
 
@@ -143,7 +161,10 @@ export default function CartPage(){
                                             {product.title}
                                         </ProductInfoCell>
                                         <td>
-                                            <Button onClick={() => lessOfThisProduct(product._id)}>-</Button>
+                                            <Button 
+                                                onClick={() => lessOfThisProduct(product._id)}>
+                                                -
+                                            </Button>
                                             <QuantityLabel>
                                                 {cartProducts.filter(id => id === product._id).length}
                                             </QuantityLabel>
