@@ -16,6 +16,10 @@ export const ButtonStyle = css`
         margin-right: 5px;
     }
     ${props => props.block && css`
+        @media screen and (min-width: 768px){
+            display: inline;
+            width: 110px;
+        }
         display: block;
         width: 100%;
     `}
