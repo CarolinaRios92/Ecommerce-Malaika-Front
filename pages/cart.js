@@ -29,8 +29,8 @@ const ProductInfoCell = styled.td`
 `;
 
 const ProductImageBox = styled.div`
-    width: 120px;
-    height: 120px;
+    width: 70px;
+    height: 80px;
     padding: 2px;
     border: 1px solid rgba(0,0,0,.1);
     display:flex;
@@ -39,16 +39,16 @@ const ProductImageBox = styled.div`
     border-radius: 10px;
     margin-bottom: 5px;
     img{
-        max-width: 110px;
-        max-height: 110px;
+        max-width: 60px;
+        max-height: 60px;
     }
-    @media screen and (min-width: 768){
+    @media screen and (min-width: 768px){
         padding: 10px;
         width: 100px;
         height: 100px;
         img {
-            max-width: 80px;
-            max-height: 80px;
+            max-width: 90px;
+            max-height: 90px;
         }
     }
 `;

@@ -13,9 +13,12 @@ import { CartContext } from "@/components/CartContext";
 
 const ColWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    @media screen and (min-width: 768px){
+        grid-template-columns: 1fr 1fr;
+    }
     gap: 40px;
-    margin-top: 40px;
+    margin: 40px 0;
 `;
 
 const PriceRow = styled.div`
