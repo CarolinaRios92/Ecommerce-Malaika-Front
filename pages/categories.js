@@ -16,13 +16,34 @@ const CategoryGrid = styled.div`
     }
 `;
 
-const CategoryTitle = styled.h2`
+const CategoryTitle = styled.div`
+    display: flex;
     margin-top: 40px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    align-items: center;
+    gap: 15px;
+    h2{
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    a {
+        color: #555;
+    }
 `;
 
 const CategoryWrapper = styled.div`
     margin-bottom: 40px;
+`;
+
+const ShowAllSquare = styled(Link)`
+    background-color: #ddd;
+    height: 160px;
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: #555;
+    text-decoration: none;
 `;
 
 export default function CategoriesPage({mainCategories, categoriesProducts}){
@@ -33,12 +54,20 @@ export default function CategoriesPage({mainCategories, categoriesProducts}){
             <Center>
                 {mainCategories?.map(categorie => (
                     <CategoryWrapper key={categorie._id}>
-                        <CategoryTitle>{categorie.name}</CategoryTitle>
-                        <Link href={"/category/"+categorie._id}>Ver Todos</Link>
+                        <CategoryTitle>
+                            <h2>{categorie.name}</h2>
+                            <Link href={"/category/"+categorie._id}>
+                                Ver Todos
+                            </Link>
+                        </CategoryTitle>
+                        
                         <CategoryGrid>
                             {categoriesProducts[categorie._id].map((product) => (
                                 <ProductBox  key={product._id} {...product}/>
                             ))}
+                            <ShowAllSquare href={"/category/"+categorie._id}>
+                                Ver todos &rarr;
+                            </ShowAllSquare>
                         </CategoryGrid>
                     </CategoryWrapper>
                 ))
@@ -59,7 +88,7 @@ export async function getServerSideProps () {
             .map(cat => cat._id.toString());
         const categoriesId = [mainCatId, ...childCatIds];
         const products = await Product.find({category: categoriesId}, null, 
-            {limit:4, sort:{"_id" : -1}});
+            {limit:3, sort:{"_id" : -1}});
         categoriesProducts[mainCat._id] = products;
     }
     return {
