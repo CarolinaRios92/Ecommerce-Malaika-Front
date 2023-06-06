@@ -4,7 +4,8 @@ import ProductsGrid from "@/components/ProductsGrid";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const CategoryHeader = styled.div`
     display: flex;
@@ -36,13 +37,18 @@ const Filter = styled.div`
 `;
 
 
-export default function CategoryPage({category, products}){
+export default function CategoryPage({
+        category, 
+        subCategories, 
+        products:originalProducts}){
+
+    const [products, setProducts] = useState(originalProducts);
     const [filtersValues, setFiltersValues] = useState(
         category.properties.map(p => ({name: p.name, value: "all"}))
     );
 
     console.log(filtersValues);
-    
+
     function handleFilterChange(filterName, filterValue){
         setFiltersValues(prev => {
             return prev.map(p => ({
@@ -52,6 +58,14 @@ export default function CategoryPage({category, products}){
 
         })
     }
+
+    useEffect(() => {
+        const catIds = [category._id, ...(subCategories?.map(cat => cat._id)) || []];
+        axios.get(`/api/products?categories=${catIds.join(",")}`).then(res => {
+            console.log(res.data)
+        })
+    }, [filtersValues]);
+
     return (
         <>
             <Header />
@@ -93,7 +107,8 @@ export async function getServerSideProps(context){
     return {
         props: {
             category: JSON.parse(JSON.stringify(category)),
-            products: JSON.parse(JSON.stringify(products))
+            products: JSON.parse(JSON.stringify(products)),
+            subCategories: JSON.parse(JSON.stringify(subCategories))
         }
     }
 }
