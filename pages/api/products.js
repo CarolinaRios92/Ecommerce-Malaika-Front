@@ -3,8 +3,16 @@ import { Product } from "@/models/Product";
 
 export default async function handler(req, res){
     await mongooseConnect();
-    const {categories} = req.query;
+    const {categories, ...filters} = req.query;
 
-    const products = await Product.find({category: categories.split(",")})
+    const productsQuery = {
+        category: categories.split(","),
+    }
+
+    if(Object.keys(filters).length > 0){
+        productsQuery.properties = filters;
+    };
+
+    const products = await Product.find(productsQuery)
     res.json(products);
 }

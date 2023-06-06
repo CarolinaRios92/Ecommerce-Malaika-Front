@@ -47,8 +47,6 @@ export default function CategoryPage({
         category.properties.map(p => ({name: p.name, value: "all"}))
     );
 
-    console.log(filtersValues);
-
     function handleFilterChange(filterName, filterValue){
         setFiltersValues(prev => {
             return prev.map(p => ({
@@ -60,9 +58,17 @@ export default function CategoryPage({
     }
 
     useEffect(() => {
-        const catIds = [category._id, ...(subCategories?.map(cat => cat._id)) || []];
-        axios.get(`/api/products?categories=${catIds.join(",")}`).then(res => {
-            console.log(res.data)
+        const catIds = [category._id, ...(subCategories?.map(cat => cat._id) || [])];
+        const params = new URLSearchParams;
+        params.set("categories", catIds.join(","))
+        filtersValues.forEach(filter => {
+            if(filter.value !== "all"){
+                params.set(filter.name, filter.value);
+            }
+        })
+        const url = "/api/products?" + params.toString();
+        axios.get(url).then(res => {
+            setProducts(res.data)
         })
     }, [filtersValues]);
 
