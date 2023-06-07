@@ -46,6 +46,7 @@ export default function CategoryPage({
     const [filtersValues, setFiltersValues] = useState(
         category.properties.map(p => ({name: p.name, value: "all"}))
     );
+    const [sort, setSort] = useState("_id-desc");
 
     function handleFilterChange(filterName, filterValue){
         setFiltersValues(prev => {
@@ -60,7 +61,8 @@ export default function CategoryPage({
     useEffect(() => {
         const catIds = [category._id, ...(subCategories?.map(cat => cat._id) || [])];
         const params = new URLSearchParams;
-        params.set("categories", catIds.join(","))
+        params.set("categories", catIds.join(","));
+        params.set("sort", sort);
         filtersValues.forEach(filter => {
             if(filter.value !== "all"){
                 params.set(filter.name, filter.value);
@@ -70,7 +72,7 @@ export default function CategoryPage({
         axios.get(url).then(res => {
             setProducts(res.data)
         })
-    }, [filtersValues]);
+    }, [filtersValues, sort]);
 
     return (
         <>
@@ -95,6 +97,17 @@ export default function CategoryPage({
                             </select>
                         </Filter>
                     ))}
+                    <Filter>
+                        <span>Ordenar por:</span>
+                        <select 
+                            value={sort}
+                            onChange={e => setSort(e.target.value)}>
+                            <option value="price-asc">Menor Precio</option>
+                            <option value="price-desc">Mayor Precio</option>
+                            <option value="_id-desc">Mas Nuevos</option>
+                            <option value="_id-asc">Mas Antiguos</option>
+                        </select>
+                    </Filter>
                     </FiltersWrapper>
                 </CategoryHeader>
                 
