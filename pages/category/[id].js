@@ -6,6 +6,7 @@ import { Product } from "@/models/Product";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Spinner from "@/components/Spinner";
 
 const CategoryHeader = styled.div`
     display: flex;
@@ -41,24 +42,30 @@ export default function CategoryPage({
         category, 
         subCategories, 
         products:originalProducts}){
-
+    
+    const defaultSorting = "_id-desc";
+    const defaultFilterValues = category.properties.map(p => ({name: p.name, value: "all"}));
     const [products, setProducts] = useState(originalProducts);
-    const [filtersValues, setFiltersValues] = useState(
-        category.properties.map(p => ({name: p.name, value: "all"}))
-    );
-    const [sort, setSort] = useState("_id-desc");
+    const [filtersValues, setFiltersValues] = useState(defaultFilterValues);
+    const [sort, setSort] = useState(defaultSorting);
+    const [loadingProducts, setLoadingProducts] = useState(false);
+    const [filtersChanged, setFiltersChanged] = useState(false);
 
     function handleFilterChange(filterName, filterValue){
         setFiltersValues(prev => {
             return prev.map(p => ({
                 name: p.name,
                 value: p.name === filterName ? filterValue : p.value,
-            }));
-
+            })); 
         })
+        setFiltersChanged(true);
     }
 
     useEffect(() => {
+        if(!filtersChanged){
+            return;   
+        }
+        setLoadingProducts(true)
         const catIds = [category._id, ...(subCategories?.map(cat => cat._id) || [])];
         const params = new URLSearchParams;
         params.set("categories", catIds.join(","));
@@ -70,9 +77,10 @@ export default function CategoryPage({
         })
         const url = "/api/products?" + params.toString();
         axios.get(url).then(res => {
-            setProducts(res.data)
+            setProducts(res.data);
+            setLoadingProducts(false);
         })
-    }, [filtersValues, sort]);
+    }, [filtersValues, sort, filtersChanged]);
 
     return (
         <>
@@ -101,7 +109,9 @@ export default function CategoryPage({
                         <span>Ordenar por:</span>
                         <select 
                             value={sort}
-                            onChange={e => setSort(e.target.value)}>
+                            onChange={e => {
+                                setSort(e.target.value); 
+                                setFiltersChanged(true)}}>
                             <option value="price-asc">Menor Precio</option>
                             <option value="price-desc">Mayor Precio</option>
                             <option value="_id-desc">Mas Nuevos</option>
@@ -110,8 +120,20 @@ export default function CategoryPage({
                     </Filter>
                     </FiltersWrapper>
                 </CategoryHeader>
-                
-                <ProductsGrid products={products} />
+                {loadingProducts && (
+                    <Spinner fullWidth/>
+                )}
+                {!loadingProducts && (
+                    <div>
+                        {products.length > 0 && (
+                            <ProductsGrid products={products} />
+                        )}
+                        {products.length === 0 && (
+                            <div>Lo sentimos, no se encontraron productos</div>
+                        )}
+                    </div>
+                    
+                )}
             </Center>
         </>
     )
