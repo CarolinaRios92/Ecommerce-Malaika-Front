@@ -10,9 +10,11 @@ export default async function handler(req, res){
     }
 
     if(Object.keys(filters).length > 0){
-        productsQuery.properties = filters;
+        Object.keys(filters).forEach(filterName => {
+            const value = filters[filterName];
+            productsQuery["properties."+filterName] = value;
+        })
     };
-
     const products = await Product.find(productsQuery)
     res.json(products);
 }
