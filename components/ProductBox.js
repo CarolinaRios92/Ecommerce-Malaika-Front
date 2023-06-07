@@ -3,6 +3,8 @@ import Button from "./Button";
 import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
+import FlyingButton from "./FlyingButton";
+
 
 const ProductWrapper = styled.div`
 
@@ -75,14 +77,9 @@ export default function ProductBox({_id, title, description, price, images}){
                     <Price>
                         $ {price}
                     </Price>
-
-                    <Button 
-                        primary={1} 
-                        outline={1}
-                        block
-                        onClick={() => addProduct(_id)}>
+                    <FlyingButton _id={_id} src={images?.[0]}>
                         Agregar
-                    </Button>
+                    </FlyingButton>
                 </PriceRow>
             </ProductInfoBox>
         </ProductWrapper>
