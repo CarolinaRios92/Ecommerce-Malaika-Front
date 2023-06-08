@@ -32,7 +32,7 @@ const ColumnsWrapper = styled.div`
     grid-template-columns: 1fr;
     column
     gap: 40px;
-    img {
+    img.main {
         max-width: 100%;
         max-height: 280px;
         margin: 0 auto
@@ -89,7 +89,7 @@ export default function Featured({product}){
                     </Column>
                     <Column>
                         <RevealWrapper>
-                            <img src="https://ecommerce-woman.s3.us-east-2.amazonaws.com/1684853825438.jpg" alt="imagen del producto" />
+                            <img className="main" src="https://ecommerce-woman.s3.us-east-2.amazonaws.com/1684853825438.jpg" alt="imagen del producto" />
                         </RevealWrapper>
                     </Column>
                 </ColumnsWrapper>
