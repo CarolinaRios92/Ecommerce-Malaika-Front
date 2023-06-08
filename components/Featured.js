@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import Center from "./Center";
-import Button from "./Button";
 import ButtonLink from "./ButtonLink";
 import CartIcon from "./icons/CartIcon";
-import { useContext } from "react";
-import { CartContext } from "./CartContext";
 import FlyingButton from "./FlyingButton";
+import { RevealWrapper } from "next-reveal";
 
 const Bg = styled.div`
   background-color: #222;
@@ -65,40 +63,36 @@ const ButtonsWrapper = styled.div`
 ` 
 
 export default function Featured({product}){
-    const {addProduct} = useContext(CartContext);
-
-    function addFeaturedToCart(){
-        addProduct(product._id);
-    }
-
     return (
         <Bg>
             <Center>
                 <ColumnsWrapper>
                     <Column>
                         <div>
-                            <Title>{product.title}</Title>
-                            <Desc>{product.description}</Desc>
-
-                            <ButtonsWrapper>
-                                <ButtonLink 
-                                    href={"/product/"+product._id} 
-                                    outline={1} 
-                                    white={1}>
-                                    Mas información
-                                </ButtonLink>
-                                <FlyingButton white _id={product._id} src={product.images?.[0]}>
-                                    <CartIcon />
-                                    Agregar
-                                </FlyingButton>
-                            </ButtonsWrapper>
+                            <RevealWrapper origin={"left"}>
+                                <Title>{product.title}</Title>
+                                <Desc>{product.description}</Desc>
+                                <ButtonsWrapper>
+                                    <ButtonLink 
+                                        href={"/product/"+product._id} 
+                                        outline={1} 
+                                        white={1}>
+                                        Mas información
+                                    </ButtonLink>
+                                    <FlyingButton white _id={product._id} src={product.images?.[0]}>
+                                        <CartIcon />
+                                        Agregar
+                                    </FlyingButton>
+                                </ButtonsWrapper>
+                            </RevealWrapper>
                         </div>
                     </Column>
                     <Column>
-                        <img src="https://ecommerce-woman.s3.us-east-2.amazonaws.com/1684853825438.jpg" alt="imagen del producto" />
+                        <RevealWrapper>
+                            <img src="https://ecommerce-woman.s3.us-east-2.amazonaws.com/1684853825438.jpg" alt="imagen del producto" />
+                        </RevealWrapper>
                     </Column>
                 </ColumnsWrapper>
-                
             </Center>
         </Bg>
     )
