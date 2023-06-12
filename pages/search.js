@@ -11,8 +11,15 @@ import Spinner from "@/components/Spinner";
 const SearchInput = styled(Input)`
     padding: 5px 10px;
     border-radius: 5px;
-    margin: 30px 0 30px;
     font-size: 1.3rem;
+`;
+
+const InputWrapper = styled.div`
+    position: sticky;
+    top:68px;
+    margin: 25px 0;
+    padding: 5px 0;
+    background-color: #eee;
 `;
 
 export default function SearchPage(){
@@ -45,11 +52,13 @@ export default function SearchPage(){
         <>
             <Header />
             <Center>
-                <SearchInput 
+                <InputWrapper>
+                    <SearchInput 
                     value={phrase}
                     onChange={e => setPhrase(e.target.value)}
                     autoFocus
                     placeholder="Buscar..."/>
+                </InputWrapper>
                 
                 {!isLoading && phrase !== "" && products.length === 0 && (
                     <h2>No se encontraron productos para la busqueda &quot;{phrase}&quot;</h2>
