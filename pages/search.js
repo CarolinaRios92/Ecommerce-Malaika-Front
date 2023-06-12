@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import styled from "styled-components";
 import Input from "@/components/Input";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const SearchInput = styled(Input)`
     padding: 5px 10px;
@@ -16,9 +17,12 @@ export default function SearchPage(){
 
     useEffect(() => {
         if(phrase.length > 0){
-
+            axios.get("/api/products?phrase="+encodeURIComponent(phrase))
+                .then(response => {
+                    console.log(response.data)
+                })
         }
-    }, [search]);
+    }, [phrase]);
 
     return (
         <>
