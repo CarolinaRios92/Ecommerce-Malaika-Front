@@ -6,3 +6,8 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
 }
+hr{
+    display: block;
+    border: 0;
+    border-top: 1px solid #ccc;
+}

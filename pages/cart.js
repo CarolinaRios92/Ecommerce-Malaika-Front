@@ -96,6 +96,11 @@ export default function CartPage(){
             setIsSuccess(true);
             clearCart();
         }
+        axios.get("/api/client").then(response => {
+            setName(response.data.name);
+            setEmail(response.data.email);
+            setPhone(response.data.phone);
+        })
     }, []);
 
     function moreOfThisProduct(id){
@@ -217,7 +222,7 @@ export default function CartPage(){
                                     placeholder="Email"/>
                                     
                                 <Input 
-                                    type="number" 
+                                    type="tel" 
                                     value={phone} 
                                     name="phone"
                                     onChange={(e) => setPhone(e.target.value)}

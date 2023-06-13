@@ -6,7 +6,7 @@ const Wrapper = styled.div`
         ? `display: block;
         display: flex;
         justify-content: center;
-        padding-top: 50px;` 
+        padding: 50px 0px;` 
         : `border: 5px solid blue`}
 `;
 

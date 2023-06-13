@@ -3,11 +3,12 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import {useSession, signOut, signIn} from "next-auth/react";
 import { RevealWrapper } from "next-reveal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "@/components/Input";
 import WhiteBox from "@/components/WhiteBox";
 import axios from "axios";
+import Spinner from "@/components/Spinner";
 
 const ColsWrapper = styled.div`
     display: grid;
@@ -21,6 +22,7 @@ export default function AccountPage () {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [loaded, setLoaded] = useState(false);
 
     async function logout(){
         await signOut({
@@ -34,8 +36,17 @@ export default function AccountPage () {
 
     function saveInfo(){
         const data = {name, email, phone};
-        axios.put("/api/user", data)
+        axios.put("/api/client", data)
     }
+
+    useEffect(() => {
+        axios.get("/api/client").then(response => {
+            setName(response.data.name);
+            setEmail(response.data.email);
+            setPhone(response.data.phone);
+            setLoaded(true);
+        });
+    },[])
 
     return (
         <>
@@ -53,36 +64,43 @@ export default function AccountPage () {
                         <RevealWrapper delay={100}>
                             <WhiteBox>
                                 <h2>Datos Cuenta</h2>
-                                <Input 
-                                    type="text" 
-                                    value={name} 
-                                    name="name"
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="Name"/>
+                                {!loaded && (
+                                    <Spinner fullWidth={true} />
+                                )}
+                                {loaded && (
+                                    <>
+                                        <Input 
+                                        type="text" 
+                                        value={name} 
+                                        name="name"
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Name"/>
 
-                                <Input 
-                                    type="text" 
-                                    value={email} 
-                                    name="email"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Email"/>
-                                    
-                                <Input 
-                                    type="tel" 
-                                    value={phone} 
-                                    name="phone"
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    placeholder="Telefono"/>
+                                        <Input 
+                                            type="text" 
+                                            value={email} 
+                                            name="email"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Email"/>
+                                            
+                                        <Input 
+                                            type="tel" 
+                                            value={phone} 
+                                            name="phone"
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            placeholder="Telefono"/>
 
-                                <Button 
-                                    black={1}  
-                                    block={1}
-                                    onClick={saveInfo}>
-                                        Guardar Cambios
-                                </Button>
+                                        <Button 
+                                            black={1}  
+                                            block={1}
+                                            onClick={saveInfo}>
+                                                Guardar Cambios
+                                        </Button>
 
-                                <hr/>
-
+                                        <hr/>
+                                    </>
+                                )}
+                                
                                 {session && (
                                     <Button 
                                         primary={1}
