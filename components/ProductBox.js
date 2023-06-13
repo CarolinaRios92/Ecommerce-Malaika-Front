@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
 import FlyingButton from "./FlyingButton";
+import HeartOutlineIcon from "./icons/HeartOutlineIcon";
 
 
 const ProductWrapper = styled.div`
@@ -23,6 +24,7 @@ const WhiteBox = styled(Link)`
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    position: relative;
     img{
         max-width: 100%;
         max-height: 110px
@@ -63,18 +65,35 @@ const Price = styled.div`
     }
 `;
 
-export default function ProductBox({_id, title, description, price, images}){
-    const {addProduct, cartProducts} = useContext(CartContext);
+const WishlistButton = styled.button`
+    border: 0;
+    width: 40px !important;
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    top:0;
+    right: 0;
+    background: transparent;
+    cursor: pointer;
+    svg{
+        width: 18px;
+    }
+`;
+
+export default function ProductBox({_id, title, price, images}){
     const url = "/product/"+_id;
     return (
         <ProductWrapper>
             <WhiteBox href={url}>
                 <div>
+                    <WishlistButton>
+                        <HeartOutlineIcon />
+                    </WishlistButton>
                     <img src={images[0]} alt={title}/>
                 </div>
             </WhiteBox>
             <ProductInfoBox>
-                <Title href={url}> 
+                <Title href={url}>
                     {title}
                 </Title>
                 <PriceRow>
