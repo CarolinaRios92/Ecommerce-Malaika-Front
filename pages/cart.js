@@ -13,7 +13,7 @@ const ColumnsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     @media screen and (min-width: 768px){
-        grid-template-columns: 1.3fr .7fr;
+        grid-template-columns: 1.2fr .8fr;
     }
     gap: 40px;
     margin-top: 40px;
@@ -22,27 +22,23 @@ const ColumnsWrapper = styled.div`
 const Box = styled.div`
     background-color: #fff;
     border-radius: 10px;
-    padding: 10px 30px 20px 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+    padding: 30px;
 `;
 
 const ProductInfoCell = styled.td`
     padding: 10px 0;
+    button{padding:0 !important;}
 `;
 
 const ProductImageBox = styled.div`
     width: 70px;
-    height: 80px;
+    height: 100px;
     padding: 2px;
     border: 1px solid rgba(0,0,0,.1);
     display:flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    margin-bottom: 5px;
     img{
         max-width: 60px;
         max-height: 60px;
@@ -52,18 +48,18 @@ const ProductImageBox = styled.div`
         width: 100px;
         height: 100px;
         img {
-            max-width: 90px;
-            max-height: 90px;
+            max-width: 80px;
+            max-height: 80px;
         }
     }
 `;
 
 const QuantityLabel = styled.span`
-    padding: 0 3px;
+    padding: 0 15px;
     display: block;
     @media screen and (min-width: 768px){
         display: inline-block;
-        padding: 0 10px;
+        padding: 0 6px;
     }
 `;
 
@@ -221,15 +217,15 @@ export default function CartPage(){
                                     placeholder="Email"/>
                                     
                                 <Input 
-                                    type="tel" 
+                                    type="number" 
                                     value={phone} 
                                     name="phone"
                                     onChange={(e) => setPhone(e.target.value)}
                                     placeholder="Telefono"/>
 
                                 <Button 
-                                    black={1}  
-                                    b
+                                    black={1}
+                                    block={1}
                                     onClick={goToPayment}>
                                         Comprar Ahora
                                 </Button>

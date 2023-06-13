@@ -5,21 +5,15 @@ import {useSession, signOut, signIn} from "next-auth/react";
 import { RevealWrapper } from "next-reveal";
 import { useState } from "react";
 import styled from "styled-components";
+import Input from "@/components/Input";
+import WhiteBox from "@/components/WhiteBox";
+import axios from "axios";
 
 const ColsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1.2fr .8fr;
     gap: 40px;
     margin: 40px 0;
-`;
-
-const Box = styled.div`
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px 30px 20px 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
 `;
 
 export default function AccountPage () {
@@ -38,6 +32,11 @@ export default function AccountPage () {
         await signIn("google");
     }
 
+    function saveInfo(){
+        const data = {name, email, phone};
+        axios.put("/api/user", data)
+    }
+
     return (
         <>
             <Header />
@@ -45,33 +44,64 @@ export default function AccountPage () {
                 <ColsWrapper>
                     <div>
                         <RevealWrapper delay={0}>
-                            <Box>
+                            <WhiteBox>
                                 <h2>Favoritos</h2>
-                            </Box>
+                            </WhiteBox>
                         </RevealWrapper>
                     </div>
                     <div>
                         <RevealWrapper delay={100}>
-                            <Box>
+                            <WhiteBox>
                                 <h2>Datos Cuenta</h2>
-                            </Box>
+                                <Input 
+                                    type="text" 
+                                    value={name} 
+                                    name="name"
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Name"/>
+
+                                <Input 
+                                    type="text" 
+                                    value={email} 
+                                    name="email"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Email"/>
+                                    
+                                <Input 
+                                    type="tel" 
+                                    value={phone} 
+                                    name="phone"
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    placeholder="Telefono"/>
+
+                                <Button 
+                                    black={1}  
+                                    block={1}
+                                    onClick={saveInfo}>
+                                        Guardar Cambios
+                                </Button>
+
+                                <hr/>
+
+                                {session && (
+                                    <Button 
+                                        primary={1}
+                                        onClick={logout}>
+                                            Logout
+                                    </Button>
+                                )}
+                                {!session && (
+                                    <Button
+                                        primary={1}
+                                        onClick={login}>
+                                        Login
+                                    </Button>
+                                )}
+                            </WhiteBox>
                         </RevealWrapper>
                     </div>
                 </ColsWrapper>
-                {session && (
-                    <Button 
-                        primary={1}
-                        onClick={logout}>
-                            Logout
-                    </Button>
-                )}
-                {!session && (
-                    <Button
-                        primary={1}
-                        onClick={login}>
-                        Login
-                    </Button>
-                )}
+                
                 
             </Center>
         </>

@@ -19,7 +19,7 @@ export const ButtonStyle = css`
     ${props => props.block && css`
         @media screen and (min-width: 768px){
             display: inline;
-            width: 110px;
+            width: 100%;
         }
         display: block;
         width: 100%;
