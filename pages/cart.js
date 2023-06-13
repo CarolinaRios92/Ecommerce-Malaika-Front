@@ -78,6 +78,7 @@ export default function CartPage(){
     const [products, setProducts] = useState([]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
@@ -119,6 +120,7 @@ export default function CartPage(){
         const response = await axios.post("/api/checkout", {
             name, 
             email,
+            phone,
             cartProducts,
         });
         if(response.data.url){
@@ -218,6 +220,13 @@ export default function CartPage(){
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Email"/>
                                     
+                                <Input 
+                                    type="tel" 
+                                    value={phone} 
+                                    name="phone"
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    placeholder="Telefono"/>
+
                                 <Button 
                                     black={1}  
                                     b

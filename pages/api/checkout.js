@@ -13,9 +13,9 @@ export default async function handler(req, res){
         return
     }
 
-    const URL = "https://05ed-200-126-160-143.ngrok-free.app"
+    const URL = "https://7187-2800-2246-6000-3ed-8c4c-4d59-7424-733c.ngrok-free.app"
     
-    const {name, email, cartProducts} = req.body;
+    const {name, email, phone, cartProducts} = req.body;
 
     await mongooseConnect();
     const productsIds = cartProducts;
@@ -41,6 +41,7 @@ export default async function handler(req, res){
             line_items, 
             name, 
             email,
+            phone,
             paid:false,
     });
     
