@@ -9,13 +9,20 @@ import Input from "@/components/Input";
 import WhiteBox from "@/components/WhiteBox";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
+import ProductBox from "@/components/ProductBox";
 
 const ColsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.2fr .8fr;
+    grid-template-columns: 1.3fr .7fr;
     gap: 40px;
     margin: 40px 0;
 `;
+
+const WishedProductsGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+`
 
 export default function AccountPage () {
     const {data:session} = useSession();
@@ -23,6 +30,7 @@ export default function AccountPage () {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [loaded, setLoaded] = useState(false);
+    const [wishedProducts, setWishedProducts] = useState([]);
 
     async function logout(){
         await signOut({
@@ -46,6 +54,9 @@ export default function AccountPage () {
             setPhone(response.data.phone);
             setLoaded(true);
         });
+        axios.get("/api/wishlist").then(response => {
+            setWishedProducts(response.data.map(wp => wp.product));
+        });
     },[])
 
     return (
@@ -57,6 +68,11 @@ export default function AccountPage () {
                         <RevealWrapper delay={0}>
                             <WhiteBox>
                                 <h2>Favoritos</h2>
+                                <WishedProductsGrid>
+                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
+                                        <ProductBox key={wp._id} {...wp} wished={true} />
+                                    ))}
+                                </WishedProductsGrid>
                             </WhiteBox>
                         </RevealWrapper>
                     </div>

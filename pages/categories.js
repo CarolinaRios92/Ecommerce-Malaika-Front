@@ -49,7 +49,7 @@ const ShowAllSquare = styled(Link)`
     text-decoration: none;
 `;
 
-export default function CategoriesPage({mainCategories, categoriesProducts}){
+export default function CategoriesPage({mainCategories, categoriesProducts, wishedProducts=[]}){
 
     return (
         <>
@@ -67,7 +67,7 @@ export default function CategoriesPage({mainCategories, categoriesProducts}){
                         <CategoryGrid>
                             {categoriesProducts[categorie._id].map((product, index) => (
                                 <RevealWrapper key={product._id} delay={index * 50}>
-                                    <ProductBox {...product}/>
+                                    <ProductBox {...product} wished={wishedProducts.includes(product._id)}/>
                                 </RevealWrapper>
                             ))}
                             <RevealWrapper delay={categoriesProducts[categorie._id].length * 50}>
@@ -103,7 +103,7 @@ export async function getServerSideProps (contex) {
     const {user} = await getServerSession(contex.req, contex.res, authOptions);
     const wishedProducts = await WishedProduct.find({
         userEmail: user.email, 
-        product: allFetchedProductsId.map(product => product._id.toString())
+        product: allFetchedProductsId.map(product => product.toString())
     })
 
     return {
