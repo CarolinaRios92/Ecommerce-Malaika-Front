@@ -29,7 +29,8 @@ export default function AccountPage () {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [loaded, setLoaded] = useState(false);
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [wishlistLoaded, setWishlistLoaded] = useState(false);
     const [wishedProducts, setWishedProducts] = useState([]);
 
     async function logout(){
@@ -52,12 +53,19 @@ export default function AccountPage () {
             setName(response.data.name);
             setEmail(response.data.email);
             setPhone(response.data.phone);
-            setLoaded(true);
+            setDataLoaded(true);
         });
         axios.get("/api/wishlist").then(response => {
             setWishedProducts(response.data.map(wp => wp.product));
+            setWishlistLoaded(true);
         });
-    },[])
+    },[]);
+
+    function productRemovedFromWishlist(idToRemove){
+        setWishedProducts(products => {
+            return [...products.filter(p => p._id.toString() !== idToRemove)]
+        })
+    }
 
     return (
         <>
@@ -68,11 +76,16 @@ export default function AccountPage () {
                         <RevealWrapper delay={0}>
                             <WhiteBox>
                                 <h2>Favoritos</h2>
-                                <WishedProductsGrid>
-                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
-                                        <ProductBox key={wp._id} {...wp} wished={true} />
-                                    ))}
-                                </WishedProductsGrid>
+                                {!wishlistLoaded && (
+                                    <Spinner fullWidth={true} />
+                                )}
+                                {wishlistLoaded && (
+                                    <WishedProductsGrid>
+                                        {wishedProducts.length > 0 && wishedProducts.map(wp => (
+                                            <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
+                                        ))}
+                                    </WishedProductsGrid>
+                                )}
                             </WhiteBox>
                         </RevealWrapper>
                     </div>
@@ -80,10 +93,10 @@ export default function AccountPage () {
                         <RevealWrapper delay={100}>
                             <WhiteBox>
                                 <h2>Datos Cuenta</h2>
-                                {!loaded && (
+                                {!dataLoaded && (
                                     <Spinner fullWidth={true} />
                                 )}
-                                {loaded && (
+                                {dataLoaded && (
                                     <>
                                         <Input 
                                         type="text" 
