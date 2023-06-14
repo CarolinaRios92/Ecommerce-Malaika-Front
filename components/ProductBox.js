@@ -92,10 +92,10 @@ export default function ProductBox({_id, title, price, images, wished=false}){
     function addToWishlist(e){
         e.preventDefault();
         const nextValue = !isWhished;
-        setIsWished(nextValue);
         axios.post("/api/wishlist", {
-            product:_id,
-        }).then(() => {})
+            product: _id,
+        }).then(() => {});
+        setIsWished(nextValue);
     }
 
     return (

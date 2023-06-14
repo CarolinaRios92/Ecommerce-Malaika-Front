@@ -25,7 +25,7 @@ export async function getServerSideProps(contex){
   const {user} = await getServerSession(contex.req, contex.res, authOptions);
   const wishedNewProducts = await WishedProduct.find({
     userEmail: user.email, 
-    products: newProducts.map(product => product._id).toString()
+    product: newProducts.map(product => product._id.toString())
   });
   return {
     props: {featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),

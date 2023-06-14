@@ -6,6 +6,9 @@ import { Product } from "@/models/Product";
 import styled from "styled-components";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
+import { WishedProduct } from "@/models/WishedProduct";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const CategoryGrid = styled.div`
     display: grid;
@@ -81,10 +84,11 @@ export default function CategoriesPage({mainCategories, categoriesProducts}){
     )
 }
 
-export async function getServerSideProps () {
+export async function getServerSideProps (contex) {
     const categories = await Category.find();
     const mainCategories = categories.filter(cat => !cat.parent)
     const categoriesProducts = {}; 
+    const allFetchedProductsId = [];
     for (const mainCat of mainCategories){
         const mainCatId = mainCat._id.toString();
         const childCatIds = categories
@@ -93,14 +97,22 @@ export async function getServerSideProps () {
         const categoriesId = [mainCatId, ...childCatIds];
         const products = await Product.find({category: categoriesId}, null, 
             {limit:3, sort:{"_id" : -1}});
+        allFetchedProductsId.push(...products.map(p => p._id.toString()));
         categoriesProducts[mainCat._id] = products;
     }
+    const {user} = await getServerSession(contex.req, contex.res, authOptions);
+    const wishedProducts = await WishedProduct.find({
+        userEmail: user.email, 
+        product: allFetchedProductsId.map(product => product._id.toString())
+    })
+
     return {
         props: {
             mainCategories: JSON.parse
                 (JSON.stringify(mainCategories)),
             categoriesProducts: JSON.parse(
                 JSON.stringify(categoriesProducts)),
+            wishedProducts: wishedProducts.map(i => i.product.toString()),
         }
     }
 }
