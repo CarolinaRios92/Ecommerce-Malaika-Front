@@ -100,11 +100,13 @@ export async function getServerSideProps (contex) {
         allFetchedProductsId.push(...products.map(p => p._id.toString()));
         categoriesProducts[mainCat._id] = products;
     }
-    const {user} = await getServerSession(contex.req, contex.res, authOptions);
-    const wishedProducts = await WishedProduct.find({
-        userEmail: user.email, 
+    const session = await getServerSession(contex.req, contex.res, authOptions);
+    const wishedProducts = session?.user
+        ? await WishedProduct.find({
+        userEmail: session.user.email, 
         product: allFetchedProductsId.map(product => product.toString())
-    })
+            })
+        : [];
 
     return {
         props: {

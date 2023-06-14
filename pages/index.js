@@ -22,11 +22,13 @@ export async function getServerSideProps(contex){
   await mongooseConnect();
   const featuredProduct = await Product.findById(featuredProductId);
   const newProducts = await Product.find({},null, {sort: {"_id": -1}, limit: 10});
-  const {user} = await getServerSession(contex.req, contex.res, authOptions);
-  const wishedNewProducts = await WishedProduct.find({
-    userEmail: user.email, 
+  const session = await getServerSession(contex.req, contex.res, authOptions);
+  const wishedNewProducts = session?.user 
+    ? await WishedProduct.find({
+    userEmail: session.user.email, 
     product: newProducts.map(product => product._id.toString())
-  });
+  }) 
+    : [];
   return {
     props: {featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
     newProducts: JSON.parse(JSON.stringify(newProducts)),

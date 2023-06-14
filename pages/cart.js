@@ -8,6 +8,7 @@ import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
 import { RevealWrapper } from "next-reveal";
+import { useSession } from "next-auth/react";
 
 const ColumnsWrapper = styled.div`
     display: grid;
@@ -70,6 +71,7 @@ const Total = styled.td`
 
 
 export default function CartPage(){
+    const {data:session} = useSession();
     const {cartProducts, addProduct, removeProduct, clearCart} = useContext(CartContext);
     const [products, setProducts] = useState([]);
     const [name, setName] = useState("");
@@ -96,12 +98,18 @@ export default function CartPage(){
             setIsSuccess(true);
             clearCart();
         }
+    }, []);
+
+    useEffect(() => {
+        if(!session){
+            return;
+        }
         axios.get("/api/client").then(response => {
             setName(response.data.name);
             setEmail(response.data.email);
             setPhone(response.data.phone);
         })
-    }, []);
+    }, [session]);
 
     function moreOfThisProduct(id){
         addProduct(id);

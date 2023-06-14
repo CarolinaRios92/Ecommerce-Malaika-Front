@@ -23,11 +23,13 @@ export default function ProductsPage({products, wishedProducts}) {
 export async function getServerSideProps(contex){
     await mongooseConnect();
     const products = await Product.find({}, null, {sort: {"_id": -1}});
-    const {user} = await getServerSession(contex.req, contex.res, authOptions);
-    const wishedProducts = await WishedProduct.find({
-    userEmail: user.email, 
+    const session = await getServerSession(contex.req, contex.res, authOptions);
+    const wishedProducts = session?.user 
+    ? await WishedProduct.find({
+    userEmail: session.user.email, 
     product: products.map(product => product._id.toString())
-  });
+    })
+    : [];
     return {
         props: {
             products: JSON.parse(JSON.stringify(products)),
