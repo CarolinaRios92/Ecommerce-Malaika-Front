@@ -11,6 +11,7 @@ import axios from "axios";
 import Spinner from "@/components/Spinner";
 import ProductBox from "@/components/ProductBox";
 import Tabs from "@/components/Tabs";
+import SingleOrder from "@/components/SingleOrder";
 
 const ColsWrapper = styled.div`
     display: grid;
@@ -131,7 +132,12 @@ export default function AccountPage () {
                                         )}
                                         {ordersLoaded && (
                                             <div>
-                                                {orders.length}
+                                                {orders.length === 0 && (
+                                                    <p>Logeate para poder ver tus ordenes</p>
+                                                )}
+                                                {orders.length > 0 && orders.map(order => (
+                                                    <SingleOrder key={order._id} {...order}/>
+                                                )) }
                                             </div>
                                         )}
                                     </>
