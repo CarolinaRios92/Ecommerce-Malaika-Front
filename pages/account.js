@@ -10,6 +10,7 @@ import WhiteBox from "@/components/WhiteBox";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import ProductBox from "@/components/ProductBox";
+import Tabs from "@/components/Tabs";
 
 const ColsWrapper = styled.div`
     display: grid;
@@ -34,7 +35,10 @@ export default function AccountPage () {
     const [phone, setPhone] = useState("");
     const [dataLoaded, setDataLoaded] = useState(true);
     const [wishlistLoaded, setWishlistLoaded] = useState(true);
+    const [ordersLoaded, setOrdersLoaded] = useState(true);
     const [wishedProducts, setWishedProducts] = useState([]);
+    const [activeTab, setActiveTab] = useState("Ordenes");
+    const [orders, setOrders] = useState([]);
 
     async function logout(){
         await signOut({
@@ -57,6 +61,7 @@ export default function AccountPage () {
         }
         setDataLoaded(false);
         setWishlistLoaded(false);
+        setOrdersLoaded(false)
         axios.get("/api/client").then(response => {
             setName(response.data.name);
             setEmail(response.data.email);
@@ -67,6 +72,10 @@ export default function AccountPage () {
             setWishedProducts(response.data.map(wp => wp.product));
             setWishlistLoaded(true);
         });
+        axios.get("/api/orders").then(response => {
+            setOrders(response.data);
+            setOrdersLoaded(true);
+        })
     },[session]);
 
     function productRemovedFromWishlist(idToRemove){
@@ -83,31 +92,52 @@ export default function AccountPage () {
                     <div>
                         <RevealWrapper delay={0}>
                             <WhiteBox>
-                                <h2>Favoritos</h2>
-                                {!wishlistLoaded && (
-                                    <Spinner fullWidth={true} />
-                                )}
-                                {wishlistLoaded && (
+                                <Tabs 
+                                    tabs={["Ordenes", "Favoritos"]} 
+                                    active={activeTab} 
+                                    onChange={setActiveTab}/>
+
+                                {activeTab === "Favoritos" && (
                                     <>
-                                        <WishedProductsGrid>
-                                            {wishedProducts.length > 0 && wishedProducts.map(wp => (
-                                                <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
-                                            ))}
-                                        </WishedProductsGrid>
-                                        {wishedProducts.length === 0 && (
-                                                <>
-                                                    {session && (
-                                                        <p>Tu lista de favoritos esta vacia!</p>
-                                                    )}
-                                                    {!session && (
-                                                        <p>Registrate para agregar productos a tu lista de favoritos!</p>
-                                                    )}
-                                                </>
-                                                
-                                            )}
+                                        {!wishlistLoaded && (
+                                            <Spinner fullWidth={true} />
+                                        )}
+                                        {wishlistLoaded && (
+                                            <>
+                                                <WishedProductsGrid>
+                                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
+                                                        <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
+                                                    ))}
+                                                </WishedProductsGrid>
+                                                {wishedProducts.length === 0 && (
+                                                    <>
+                                                        {session && (
+                                                            <p>Tu lista de favoritos esta vacia!</p>
+                                                        )}
+                                                        {!session && (
+                                                            <p>Registrate para agregar productos a tu lista de favoritos!</p>
+                                                        )}
+                                                    </>    
+                                                )}
+                                            </>  
+                                        )}
                                     </>
-                                    
                                 )}
+
+                                {activeTab === "Ordenes" && (
+                                    <>
+                                        {!ordersLoaded && (
+                                            <Spinner fullWidth={true} />
+                                        )}
+                                        {ordersLoaded && (
+                                            <div>
+                                                {orders.length}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                
+                                
                             </WhiteBox>
                         </RevealWrapper>
                     </div>

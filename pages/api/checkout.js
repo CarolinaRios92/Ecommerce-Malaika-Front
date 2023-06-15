@@ -2,6 +2,8 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
 import { Product } from "@/models/Product";
 import mercadopago, { preferences } from "mercadopago";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 mercadopago.configure({
     access_token: "TEST-2518688239677103-053110-4948c339e4ef6fcef10c589ccf6f1643-1386243609"
@@ -33,8 +35,9 @@ export default async function handler(req, res){
                 quantity: quantity,
         });
         }
-        
     }
+
+    const session = await getServerSession(req, res, authOptions);
 
     try {
         const orderDoc = await Order.create({
@@ -43,6 +46,7 @@ export default async function handler(req, res){
             email,
             phone,
             paid:false,
+            userEmail: session?.user?.email,
     });
     
         const result = await mercadopago.preferences.create({
