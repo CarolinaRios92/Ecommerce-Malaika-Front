@@ -30,19 +30,21 @@ const Desc = styled.p`
 const ColumnsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    column
     gap: 40px;
     img.main {
         max-width: 100%;
         max-height: 280px;
-        margin: 0 auto
+        display:block;
+        margin: 0 auto;
     }
     div:nth-child(1){
         order: 2;
+        margin-left:auto;
+        margin-right: auto;
     }
     @media screen and (min-width: 768px){
         grid-template-columns: 1.1fr 0.9fr;
-        div:nth-child(1){
+        & > div:nth-child(1){
         order: 0;
         }
         img {
@@ -60,7 +62,20 @@ const ButtonsWrapper = styled.div`
     display:flex;
     gap: 10px;
     margin-top: 25px;
-` 
+`;
+
+const CenterImage = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+`;
+
+const ImgColumn = styled(Column)`
+    & > div{
+        width: 100%;
+    }
+`;
 
 export default function Featured({product}){
     return (
@@ -70,28 +85,32 @@ export default function Featured({product}){
                     <Column>
                         <div>
                             <RevealWrapper origin={"left"}>
-                                <Title>{product.title}</Title>
-                                <Desc>{product.description}</Desc>
-                                <ButtonsWrapper>
-                                    <ButtonLink 
-                                        href={"/product/"+product._id} 
-                                        outline={1} 
-                                        white={1}>
-                                        Mas información
-                                    </ButtonLink>
-                                    <FlyingButton white={1} _id={product._id} src={product.images?.[0]}>
-                                        <CartIcon />
-                                        Agregar
-                                    </FlyingButton>
-                                </ButtonsWrapper>
+                                <div>
+                                    <Title>{product.title}</Title>
+                                    <Desc>{product.description}</Desc>
+                                    <ButtonsWrapper>
+                                        <ButtonLink 
+                                            href={"/product/"+product._id} 
+                                            outline={1} 
+                                            white={1}>
+                                            Mas información
+                                        </ButtonLink>
+                                        <FlyingButton white={1} _id={product._id} src={product.images?.[0]}>
+                                            <CartIcon />
+                                            Agregar
+                                        </FlyingButton>
+                                    </ButtonsWrapper>
+                                </div>
                             </RevealWrapper>
                         </div>
                     </Column>
-                    <Column>
+                    <ImgColumn>
                         <RevealWrapper>
-                            <img className="main" src="https://ecommerce-woman.s3.us-east-2.amazonaws.com/1684853825438.jpg" alt="imagen del producto" />
+                            <CenterImage>
+                                <img className="main" src={product.images?.[0]} alt="imagen del producto" />
+                            </CenterImage>
                         </RevealWrapper>
-                    </Column>
+                    </ImgColumn>
                 </ColumnsWrapper>
             </Center>
         </Bg>
