@@ -15,7 +15,7 @@ export default async function handler(req, res){
         return
     }
 
-    const URL = "https://7187-2800-2246-6000-3ed-8c4c-4d59-7424-733c.ngrok-free.app"
+    const URL = "https://7941-200-126-160-143.ngrok-free.app"
     
     const {name, email, phone, cartProducts} = req.body;
 
@@ -46,6 +46,7 @@ export default async function handler(req, res){
             email,
             phone,
             paid:false,
+            delivered:false,
             userEmail: session?.user?.email,
     });
     
