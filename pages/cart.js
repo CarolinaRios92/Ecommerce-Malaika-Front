@@ -80,6 +80,7 @@ export default function CartPage(){
     const [phone, setPhone] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
 
+    console.log(name);
     useEffect(() => {
         if(cartProducts?.length > 0){
             axios.post("api/cart", {ids:cartProducts})
@@ -126,7 +127,8 @@ export default function CartPage(){
         total += price;
     }
 
-    async function goToPayment(){
+    async function goToPayment(e){
+        e.preventDefault()
         const response = await axios.post("/api/checkout", {
             name, 
             email,
@@ -217,33 +219,40 @@ export default function CartPage(){
                         <RevealWrapper delay={100}>
                             <Box>
                                 <h2>Información para la Compra</h2>
-                                <Input 
-                                    type="text" 
-                                    value={name} 
-                                    name="name"
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="Name"/>
+                                <form onSubmit={goToPayment}>
+                                    <Input 
+                                        type="text" 
+                                        value={name} 
+                                        required
+                                        name="name"
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Name"/>
 
-                                <Input 
-                                    type="text" 
-                                    value={email} 
-                                    name="email"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Email"/>
-                                    
-                                <Input 
-                                    type="tel" 
-                                    value={phone} 
-                                    name="phone"
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    placeholder="Telefono"/>
+                                    <Input 
+                                        type="text" 
+                                        required
+                                        value={email} 
+                                        name="email"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Email"/>
+                                        
+                                    <Input 
+                                        type="tel"
+                                        required 
+                                        value={phone} 
+                                        name="phone"
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        placeholder="Telefono"/>
 
-                                <Button 
-                                    black={1}
-                                    block={1}
-                                    onClick={goToPayment}>
-                                        Comprar Ahora
-                                </Button>
+                                    <Button 
+                                        black={1}
+                                        block={1}
+                                        disable={!phone || !email || !name}
+                                        type="submit">
+                                            Comprar Ahora
+                                    </Button>
+                                </form>
+                                
                             </Box>
                         </RevealWrapper>
                         
