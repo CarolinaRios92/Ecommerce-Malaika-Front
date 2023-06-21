@@ -9,6 +9,7 @@ import Table from "@/components/Table";
 import Input from "@/components/Input";
 import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 const ColumnsWrapper = styled.div`
     display: grid;
@@ -148,6 +149,7 @@ export default function CartPage(){
                                 <p>Te enviaremos por email los datos de tu compra</p>
                             </Box>
                         </ColumnsWrapper>
+                        <WhatsappIcon />
                     </Center>
             </>
         )
@@ -247,6 +249,7 @@ export default function CartPage(){
                         
                     )}
                 </ColumnsWrapper>
+                <WhatsappIcon />
             </Center> 
         </>
     )

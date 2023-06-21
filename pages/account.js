@@ -12,6 +12,7 @@ import Spinner from "@/components/Spinner";
 import ProductBox from "@/components/ProductBox";
 import Tabs from "@/components/Tabs";
 import SingleOrder from "@/components/SingleOrder";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 const ColsWrapper = styled.div`
     display: grid;
@@ -206,7 +207,7 @@ export default function AccountPage () {
                         </RevealWrapper>
                     </div>
                 </ColsWrapper>
-                
+                <WhatsappIcon />
                 
             </Center>
         </>

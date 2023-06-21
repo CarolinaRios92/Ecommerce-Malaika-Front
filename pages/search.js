@@ -7,6 +7,7 @@ import axios from "axios";
 import ProductsGrid from "@/components/ProductsGrid";
 import { debounce } from "lodash";
 import Spinner from "@/components/Spinner";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 const SearchInput = styled(Input)`
     padding: 5px 10px;
@@ -69,6 +70,7 @@ export default function SearchPage(){
                 {!isLoading && products.length > 0 && phrase !== "" && (
                     <ProductsGrid products={products} />
                 )}
+                <WhatsappIcon />
             </Center>
         </>
     )

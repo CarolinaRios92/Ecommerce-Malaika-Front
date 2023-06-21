@@ -7,6 +7,7 @@ import Title from "@/components/Title";
 import { WishedProduct } from "@/models/WishedProduct";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 export default function ProductsPage({products, wishedProducts}) {
     return (
@@ -15,6 +16,7 @@ export default function ProductsPage({products, wishedProducts}) {
             <Center>
                 <Title>Todos los Productos</Title>
                 <ProductsGrid products={products} wishedProducts={wishedProducts}/>
+                <WhatsappIcon />
             </Center>
         </>
     )

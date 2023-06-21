@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Center from "@/components/Center";
 import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
-import BarsIcon from "./icons/Bars";
+import BarsIcon from "./icons/BarsIcon";
 import SearchIcon from "./icons/SearchIcon";
 
 const StyleHeader = styled.header`
@@ -61,8 +61,8 @@ const NavLink = styled(Link)`
 
 const NavButton = styled.button`
     background-color: transparent;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border: 0;
     color: white;
     cursor: pointer;
@@ -81,8 +81,8 @@ const SideIcons = styled.div`
         min-width: 20px;
         color: white;
         svg {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
         }
     }
 `;

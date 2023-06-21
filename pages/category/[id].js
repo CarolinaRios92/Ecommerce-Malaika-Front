@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 const CategoryHeader = styled.div`
     display: flex;
@@ -134,6 +135,7 @@ export default function CategoryPage({
                     </div>
                     
                 )}
+                <WhatsappIcon />
             </Center>
         </>
     )

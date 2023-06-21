@@ -9,6 +9,7 @@ import { RevealWrapper } from "next-reveal";
 import { WishedProduct } from "@/models/WishedProduct";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import WhatsappIcon from "@/components/WhatsappIcon";
 
 const CategoryGrid = styled.div`
     display: grid;
@@ -79,6 +80,7 @@ export default function CategoriesPage({mainCategories, categoriesProducts, wish
                     </CategoryWrapper>
                 ))
                 }
+                <WhatsappIcon />
             </Center>
         </>
     )
