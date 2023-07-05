@@ -70,34 +70,23 @@ const Total = styled.td`
     font-weight: 500;
 `
 
+const ProductDescription = styled.p`
+    font-size: 0.75rem;
+    margin-top: 0px;
+`;
+
+const ProductTitle = styled.p`
+    margin-bottom: 0px;
+`
+
 
 export default function CartPage(){
     const {data:session} = useSession();
     const {cartProducts, addProduct, removeProduct, clearCart} = useContext(CartContext);
-    const [products, setProducts] = useState([]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
-
-    console.log(cartProducts);
-
-    const idsProduct = cartProducts.map(product => (
-        product.productId
-    ))
-
-    console.log(products);
-
-    useEffect(() => {
-        if(cartProducts?.length > 0){
-            axios.post("api/cart", {ids:idsProduct})
-            .then(response => {
-                setProducts(response.data);
-            })
-        } else {
-            setProducts([]);
-        }
-    }, [cartProducts]);
 
     useEffect(() => {
         if(typeof window === "undefined"){
@@ -108,6 +97,8 @@ export default function CartPage(){
             clearCart();
         }
     }, []);
+
+    console.log(cartProducts)
 
     useEffect(() => {
         if(!session){
@@ -120,17 +111,17 @@ export default function CartPage(){
         })
     }, [session]);
 
-    function moreOfThisProduct(id){
-        addProduct(id);
+    function moreOfThisProduct(property, units, image, title, price, productId){
+        addProduct(property, units, image, title, price, productId);
     }
 
-    function lessOfThisProduct(id){
-        removeProduct(id);
+    function lessOfThisProduct(id, property){
+        removeProduct(id, property);
     }
 
     let total = 0;
-    for(const productId of cartProducts){
-        const price = products.find(product => product._id === productId)?.price || 0;
+    for(const product of cartProducts){
+        const price = product.units * product.price
         total += price;
     }
 
@@ -175,7 +166,7 @@ export default function CartPage(){
                             {!cartProducts?.length && (
                                 <div>El carrito esta vacio!</div>
                             )}
-                            {products?.length > 0 && (
+                            {cartProducts?.length > 0 && (
                             <Table>
                                 <thead>
                                     <tr>
@@ -185,29 +176,32 @@ export default function CartPage(){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products?.map(product => (
-                                        <tr key={product._id}>
+                                    {cartProducts?.map(product => (
+                                        <tr key={product.productId}>
                                             <ProductInfoCell>
                                                 <ProductImageBox>
-                                                    <img src={product.images[0]} alt={product.title}/>
+                                                    <img src={product.image} alt={product.title}/>
                                                 </ProductImageBox>
-                                                {product.title}
+
+                                                <ProductTitle>{product.title}</ProductTitle>
+                                                <ProductDescription>{product.property}</ProductDescription>
+
                                             </ProductInfoCell>
                                             <td>
                                                 <Button 
-                                                    onClick={() => lessOfThisProduct(product._id)}>
+                                                    onClick={() => lessOfThisProduct(product.productId, product.property)}>
                                                     -
                                                 </Button>
                                                 <QuantityLabel>
-                                                    {cartProducts.filter(id => id === product._id).length}
+                                                    {product.units}    
                                                 </QuantityLabel>
                                                 <Button 
-                                                    onClick={() => moreOfThisProduct(product._id)}>
+                                                    onClick={() => moreOfThisProduct(product.property, product.units, product.image, product.title, product.price, product.productId)}>
                                                         +
                                                 </Button>
                                             </td>
                                             <td>
-                                                $ {cartProducts.filter(id => id === product._id).length * product.price}
+                                                $ {product.units * product.price}
                                             </td>    
                                         </tr>
                                             ))}

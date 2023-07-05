@@ -46,9 +46,7 @@ export default function ProductPage({product}){
                 setCategory(result.data);
             })
     }, []);
-
-
-
+    
     const optionProducts = [];
     const unitsOptionProduct = [];
 
@@ -60,8 +58,6 @@ export default function ProductPage({product}){
             unitsOptionProduct.push(product.properties[nameProperty][property])
         }
     } 
-
-        console.log(optionProducts.indexOf(productProperty));
 
     return (
         <>
@@ -120,10 +116,13 @@ export default function ProductPage({product}){
                             </div>
                             <div>
                                 <FlyingButton main 
-                                    _id={product._id} 
+                                    productId={product._id} 
                                     src={product.images?.[0]} 
                                     property={productProperty} 
-                                    units={unitsSelected}>
+                                    units={unitsSelected}
+                                    image={product.images[0]}
+                                    title={product.title}
+                                    price={product.price}>
                                         <CartIcon />
                                         Agregar al carrito
                                 </FlyingButton>

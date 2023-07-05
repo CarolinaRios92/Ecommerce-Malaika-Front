@@ -4,6 +4,7 @@ import { primary } from "@/lib/colors";
 import { useContext, useEffect } from "react";
 import { CartContext } from "./CartContext";
 import { useRef } from "react";
+import Swal from "sweetalert2";
 
 const FlyingButtonWrapper = styled.div`
     button{
@@ -44,9 +45,10 @@ const FlyingButtonWrapper = styled.div`
 `;
 
 export default function FlyingButton(props){
-    const {addProduct} = useContext(CartContext);
+    const {addProduct, cartProducts} = useContext(CartContext);
     const imgRef = useRef();
-
+    const {property, units, image, title, price, productId} = props;
+    
     function sendImageToCart(e){
         imgRef.current.style.display = "inline-block";
         imgRef.current.style.left = (e.clientX - 50) + "px";
@@ -67,11 +69,23 @@ export default function FlyingButton(props){
         return () => clearInterval(interval)
     }, []);
 
+    function addProductCart () {
+        const existingProduct = cartProducts.find(product => ((product.productId === productId) && (product.property === property)));
+        if(existingProduct){
+            Swal.fire({
+                title: "Este producto ya esta en el carrito de compras",
+                icon: "info"
+            })
+        } else {
+            addProduct(property, units, image, title, price, productId)
+        }
+    }
+
     return (
         <FlyingButtonWrapper 
             main={props.main} 
             white={props.white}
-            onClick={() => addProduct(props._id, props.property, props.units)}>
+            onClick={() => addProductCart()}>
             <img src={props.src} ref={imgRef} />
             <button onClick={e => sendImageToCart(e)} {...props}  />
         </FlyingButtonWrapper>

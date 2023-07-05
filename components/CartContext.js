@@ -20,17 +20,29 @@ export function CartContextProvider({children}){
         }
     }, []);
     
-    function addProduct(productId, property, units){
-        setCartProducts(prev => [...prev, {productId, property, units}]);
+    function addProduct(property, units, image, title, price, productId){
+        for(let i = 0; i < cartProducts.length; i++){
+            if((cartProducts[i].productId === productId) && (cartProducts[i].property === property)){
+                cartProducts[i].units = parseInt(cartProducts[i].units) + 1;
+                setCartProducts([...cartProducts]);
+                return;
+            }
+        }
+        setCartProducts(prev => [...prev, {property, units, image, title, price, productId}]);
     }
 
-    function removeProduct(productId){
-        setCartProducts(prev => {
-            const pos = prev.indexOf(productId);
-            if(pos !== -1){
-                return prev.filter((value, index) => index !== pos);
-            } return prev;
-        })
+    function removeProduct(productId, property){
+        for(let i = 0; i < cartProducts.length; i++){
+            if((cartProducts[i].productId === productId) && (cartProducts[i].property === property)){
+                    cartProducts[i].units = parseInt(cartProducts[i].units) - 1;
+                    setCartProducts([...cartProducts]);
+                    if(cartProducts[i].units <= 0){
+                        cartProducts.splice(i, 1)
+                        setCartProducts([...cartProducts]);
+                        return
+                }
+            }
+        }
     }
 
     function clearCart(){
