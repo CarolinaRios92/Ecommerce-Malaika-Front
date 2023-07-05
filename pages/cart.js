@@ -80,10 +80,17 @@ export default function CartPage(){
     const [phone, setPhone] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
 
-    console.log(name);
+    console.log(cartProducts);
+
+    const idsProduct = cartProducts.map(product => (
+        product.productId
+    ))
+
+    console.log(products);
+
     useEffect(() => {
         if(cartProducts?.length > 0){
-            axios.post("api/cart", {ids:cartProducts})
+            axios.post("api/cart", {ids:idsProduct})
             .then(response => {
                 setProducts(response.data);
             })

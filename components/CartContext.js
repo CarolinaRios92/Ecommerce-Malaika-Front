@@ -1,3 +1,4 @@
+import { property } from "lodash";
 import { createContext, useEffect } from "react";
 import { useState } from "react";
 
@@ -19,8 +20,8 @@ export function CartContextProvider({children}){
         }
     }, []);
     
-    function addProduct(productId){
-        setCartProducts(prev => [...prev, productId]);
+    function addProduct(productId, property, units){
+        setCartProducts(prev => [...prev, {productId, property, units}]);
     }
 
     function removeProduct(productId){

@@ -7,7 +7,9 @@ const Wrapper = styled.div`
         display: flex;
         justify-content: center;
         padding: 50px 0px;` 
-        : `border: 5px solid blue`}
+        : `width: 100%;
+        display: flex;
+        justify-content: center`}
 `;
 
 export default function Spinner({fullWidth}){
