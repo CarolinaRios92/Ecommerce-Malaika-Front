@@ -35,10 +35,16 @@ const Price = styled.span`
     font-size: 1.4rem;
 `;
 
+const Stock = styled.span`
+    font-size: 0.7rem;
+    padding-left: 4px;
+    color: #444;
+`;
+
 export default function ProductPage({product}){
     const [category, setCategory] = useState([]);
     const [productProperty, setproductProperty] = useState(null);
-    const [unitsSelected, setUnitsSelected] = useState(1);
+    const [unitsSelected, setUnitsSelected] = useState(null);
     
     useEffect(() => {
         axios.get("/api/categories?id="+product.category)
@@ -60,7 +66,17 @@ export default function ProductPage({product}){
         }
     } 
 
-    console.log(product)
+    for(let i = 0; i < unitsOptionProduct.length; i++){
+        if(unitsOptionProduct[i] === "0"){
+            unitsOptionProduct.splice(i,1);
+            optionProducts.splice(i,1);
+            i--;
+        }
+    }
+
+        console.log(unitsOptionProduct);
+
+    
 
     return (
         <>
@@ -106,6 +122,7 @@ export default function ProductPage({product}){
                                                 min={1}
                                                 value={unitsSelected}
                                                 onChange={(e) => setUnitsSelected(e.target.value)}/>
+                                            <Stock>(Stock: {unitsOptionProduct[optionProducts.indexOf(productProperty)]} unidades)</Stock>
                                             </div>
                                         )}
                                 </div>) 

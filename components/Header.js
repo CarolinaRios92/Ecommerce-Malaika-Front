@@ -18,6 +18,12 @@ const Logo = styled(Link)`
     text-decoration:none;
     position:relative;
     z-index: 3;
+    font-size: 1.6rem;
+`;
+
+const BorderLogo = styled.div`
+    border-bottom: 2px solid #fff;
+    padding-bottom: 1px;
 `;
 
 const Wrapper = styled.div`
@@ -101,10 +107,12 @@ export default function Header(){
         <StyleHeader>
             <Center>
                 <Wrapper>
-                    <Logo href={"/"}>
-                        Malaika
-                    </Logo>
-
+                    <BorderLogo>
+                        <Logo href={"/"}>
+                            Malaika
+                        </Logo>
+                    </BorderLogo>
+                    
                     <StyledNav mobileNavActive={mobileNavActive}>
                         <NavLink href={"/"}>Home</NavLink>
                         <NavLink href={"/products"}>Productos</NavLink>

@@ -14,6 +14,8 @@ const StyledOrder = styled.div`
 
 const Quantity = styled.span`
     color: #aaa;
+    font-size: 0.9rem;
+    flex-basis: 10%
 `;
 
 const Data = styled.div`
@@ -21,6 +23,20 @@ const Data = styled.div`
     line-height: 1rem;
     margin-top: 5px;
     color: #888;
+`;
+
+const OrderData = styled.div`
+    display: flex;
+`;
+
+const Price = styled.span`
+    flex-basis: 25%;
+    font-size: 0.9rem;
+`;
+
+const Description = styled.p`
+    flex-basis: 65%;
+    font-size: 0.9rem;
 `;
 
 export default function SingleOrder({line_items,createdAt,...rest}){
@@ -36,11 +52,11 @@ export default function SingleOrder({line_items,createdAt,...rest}){
             </div>
             <div>
                 {line_items.map(product => (
-                    <div key={product.title}>
+                    <OrderData key={product.title}>
                         <Quantity>{product.quantity} x </Quantity>
-                        <span>{product.title}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>$ {product.unit_price * product.quantity}</span>
-                    </div>
+                        <Description>{product.title}</Description>
+                        <Price>$ {product.unit_price * product.quantity}</Price>
+                    </OrderData>
             ))}
             </div>
         </StyledOrder>
