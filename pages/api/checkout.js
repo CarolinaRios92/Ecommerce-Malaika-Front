@@ -56,11 +56,12 @@ export default async function handler(req, res){
 
         for(let i = 0; i < cartProducts.length; i++){
             const idProduct = cartProducts[i].productId;
-             const originalProduct = await Product.findOne({_id: idProduct});
-             const stock = parseInt(originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property]) - cartProducts[i].units;
-             console.log(originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property])
-        //     // const productUpdate = await Product.updateOne({idProduct}, {} )
-         }
+            const originalProduct = await Product.findOne({_id: idProduct});
+            const stock = parseInt(originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property]) - cartProducts[i].units;
+            originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property] = stock.toString();
+            const properties = originalProduct.properties;
+            await Product.updateOne({_id: idProduct}, {properties});
+        }
 
         res.status(200).send({url: result.body.init_point});
     } catch (error) {
