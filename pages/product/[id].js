@@ -52,12 +52,15 @@ export default function ProductPage({product}){
 
     if(product.properties !== null && Object.keys(category).length > 0){
         const nameProperty = category?.properties[0].name;
+        product.nameProperty = nameProperty;
 
         for(const property in product.properties[nameProperty]){
             optionProducts.push(property);
             unitsOptionProduct.push(product.properties[nameProperty][property])
         }
     } 
+
+    console.log(product)
 
     return (
         <>
@@ -122,7 +125,8 @@ export default function ProductPage({product}){
                                     units={unitsSelected}
                                     image={product.images[0]}
                                     title={product.title}
-                                    price={product.price}>
+                                    price={product.price}
+                                    nameProperty={product.nameProperty}>
                                         <CartIcon />
                                         Agregar al carrito
                                 </FlyingButton>

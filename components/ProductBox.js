@@ -121,9 +121,6 @@ export default function ProductBox({_id, title, price, images, wished=false, onR
                     <Price>
                         $ {price}
                     </Price>
-                    <FlyingButton _id={_id} src={images?.[0]}>
-                        Agregar
-                    </FlyingButton>
                 </PriceRow>
             </ProductInfoBox>
         </ProductWrapper>

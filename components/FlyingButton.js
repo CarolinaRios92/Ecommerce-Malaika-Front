@@ -47,7 +47,7 @@ const FlyingButtonWrapper = styled.div`
 export default function FlyingButton(props){
     const {addProduct, cartProducts} = useContext(CartContext);
     const imgRef = useRef();
-    const {property, units, image, title, price, productId} = props;
+    const {property, units, image, title, price, productId, nameProperty} = props;
     
     function sendImageToCart(e){
         imgRef.current.style.display = "inline-block";
@@ -77,7 +77,7 @@ export default function FlyingButton(props){
                 icon: "info"
             })
         } else {
-            addProduct(property, units, image, title, price, productId)
+            addProduct(property, units, image, title, price, productId, nameProperty)
         }
     }
 

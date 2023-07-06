@@ -92,8 +92,9 @@ export default function Header(){
     const [mobileNavActive, setMobileNavActive] = useState(false);
 
     let total = 0;
+
     const totalProducts = cartProducts.map(product => (
-        total += product.units
+        total = total + parseInt(product.units)
     ))
 
     return(
@@ -109,7 +110,7 @@ export default function Header(){
                         <NavLink href={"/products"}>Productos</NavLink>
                         <NavLink href={"/categories"}>Categorias</NavLink>
                         <NavLink href={"/account"}>Tu Cuenta</NavLink>
-                        <NavLink href={"/cart"}>Carrito ({totalProducts})</NavLink>
+                        <NavLink href={"/cart"}>Carrito ({total})</NavLink>
                     </StyledNav>
                     <SideIcons>
                         <Link href={"/search"}><SearchIcon /></Link>

@@ -95,10 +95,6 @@ export default function Featured({product}){
                                             white={1}>
                                             Mas información
                                         </ButtonLink>
-                                        <FlyingButton white={1} _id={product._id} src={product.images?.[0]}>
-                                            <CartIcon />
-                                            Agregar
-                                        </FlyingButton>
                                     </ButtonsWrapper>
                                 </div>
                             </RevealWrapper>

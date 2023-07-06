@@ -10,6 +10,7 @@ import Input from "@/components/Input";
 import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
 import WhatsappIcon from "@/components/WhatsappIcon";
+import Swal from "sweetalert2";
 
 const ColumnsWrapper = styled.div`
     display: grid;
@@ -87,6 +88,29 @@ export default function CartPage(){
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
+    const [stockProducts, setStockProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    const idsProduct = cartProducts.map(product => (
+        product.productId
+    ));
+
+    useEffect(() => {
+        if(cartProducts?.length > 0){
+            axios.post("/api/cart", {ids: idsProduct})
+                .then(response => {
+                    setStockProducts(response.data)
+                })
+        } else {
+            setStockProducts([]);
+        }
+    }, [cartProducts])
+
+    useEffect(() => {
+        axios.get("/api/categories").then(response => {
+                setCategories(response.data)
+            })
+    }, [cartProducts])
 
     useEffect(() => {
         if(typeof window === "undefined"){
@@ -98,7 +122,7 @@ export default function CartPage(){
         }
     }, []);
 
-    console.log(cartProducts)
+    console.log(cartProducts);
 
     useEffect(() => {
         if(!session){
@@ -111,7 +135,19 @@ export default function CartPage(){
         })
     }, [session]);
 
-    function moreOfThisProduct(property, units, image, title, price, productId){
+    function moreOfThisProduct(property, units, image, title, price, productId, nameProperty){
+        for(let i = 0; i < stockProducts.length; i++){
+            if(stockProducts[i]._id === productId){
+                const stock = stockProducts[i].properties[nameProperty][property];
+                if(parseInt(stock) <= units){
+                    Swal.fire({
+                        title: "No hay mas unidades en stock de este producto",
+                        icon: "warning"
+                    })
+                    return;
+                }
+            }
+        }
         addProduct(property, units, image, title, price, productId);
     }
 
@@ -120,8 +156,9 @@ export default function CartPage(){
     }
 
     let total = 0;
+
     for(const product of cartProducts){
-        const price = product.units * product.price
+        const price = parseInt(product.units) * parseInt(product.price);
         total += price;
     }
 
@@ -176,7 +213,7 @@ export default function CartPage(){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {cartProducts?.map(product => (
+                                    {cartProducts?.map((product, index) => (
                                         <tr key={product.productId}>
                                             <ProductInfoCell>
                                                 <ProductImageBox>
@@ -196,7 +233,7 @@ export default function CartPage(){
                                                     {product.units}    
                                                 </QuantityLabel>
                                                 <Button 
-                                                    onClick={() => moreOfThisProduct(product.property, product.units, product.image, product.title, product.price, product.productId)}>
+                                                    onClick={() => moreOfThisProduct(product.property, product.units, product.image, product.title, product.price, product.productId, product.nameProperty)}>
                                                         +
                                                 </Button>
                                             </td>

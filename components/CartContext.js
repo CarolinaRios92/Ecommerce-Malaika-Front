@@ -20,7 +20,7 @@ export function CartContextProvider({children}){
         }
     }, []);
     
-    function addProduct(property, units, image, title, price, productId){
+    function addProduct(property, units, image, title, price, productId, nameProperty){
         for(let i = 0; i < cartProducts.length; i++){
             if((cartProducts[i].productId === productId) && (cartProducts[i].property === property)){
                 cartProducts[i].units = parseInt(cartProducts[i].units) + 1;
@@ -28,7 +28,7 @@ export function CartContextProvider({children}){
                 return;
             }
         }
-        setCartProducts(prev => [...prev, {property, units, image, title, price, productId}]);
+        setCartProducts(prev => [...prev, {property, units, image, title, price, productId, nameProperty}]);
     }
 
     function removeProduct(productId, property){

@@ -15,26 +15,19 @@ export default async function handler(req, res){
         return
     }
 
-    const URL = "https://7941-200-126-160-143.ngrok-free.app"
+    const URL = "https://1fb8-2800-2246-6000-3ed-b86b-9127-539c-60b7.ngrok-free.app"
     
     const {name, email, phone, cartProducts} = req.body;
 
     await mongooseConnect();
-    const productsIds = cartProducts;
-    const uniqueIds = [...new Set(productsIds)];
-    const productsInfos = await Product.find({_id: uniqueIds});
 
     let line_items = [];
-    for (const productId of uniqueIds){
-        const productInfo = productsInfos.find(product => product._id.toString() === productId);
-        const quantity = productsIds.filter(id => id === productId)?.length || 0;
-        if(quantity > 0 && productInfo){
-            line_items.push({
-                title: productInfo.title,
-                unit_price: productInfo.price,
-                quantity: quantity,
+    for (const product of cartProducts){
+        line_items.push({
+            title: product.title + " - " + product.property,
+            unit_price: product.price,
+            quantity: parseInt(product.units),
         });
-        }
     }
 
     const session = await getServerSession(req, res, authOptions);
@@ -60,6 +53,14 @@ export default async function handler(req, res){
             notification_url: `${URL}/api/notify`,
             metadata: {orderId: orderDoc._id.toString(), test:"ok"},
         });
+
+        for(let i = 0; i < cartProducts.length; i++){
+            const idProduct = cartProducts[i].productId;
+             const originalProduct = await Product.findOne({_id: idProduct});
+             const stock = parseInt(originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property]) - cartProducts[i].units;
+             console.log(originalProduct.properties[cartProducts[i].nameProperty][cartProducts[i].property])
+        //     // const productUpdate = await Product.updateOne({idProduct}, {} )
+         }
 
         res.status(200).send({url: result.body.init_point});
     } catch (error) {
