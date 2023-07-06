@@ -3,7 +3,7 @@ import { Product } from "@/models/Product";
 
 export default async function handler(req, res){
     await mongooseConnect();
-    const {categories, sort, phrase, ...filters} = req.query;
+    const {categories, sort, phrase} = req.query;
     let [sortField, sortOrder] = (sort || "_id-desc").split("-");
 
     let productsQuery = {}
@@ -19,12 +19,6 @@ export default async function handler(req, res){
         ]
     }
 
-    if(Object.keys(filters).length > 0){
-        Object.keys(filters).forEach(filterName => {
-            const value = filters[filterName];
-            productsQuery["properties."+filterName] = value;
-        })
-    };
     const products = await Product.find(
         productsQuery, 
         null, 

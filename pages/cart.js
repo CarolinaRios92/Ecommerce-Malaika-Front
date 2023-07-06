@@ -78,7 +78,20 @@ const ProductDescription = styled.p`
 
 const ProductTitle = styled.p`
     margin-bottom: 0px;
-`
+`;
+
+const ButtonWhatsapp = styled.button`
+    width: 160px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    margin: auto;
+    display: flex;
+    img {
+        height: 100%;
+        width: 100%;
+    }
+`;
 
 
 export default function CartPage(){
@@ -175,6 +188,10 @@ export default function CartPage(){
         }
     }
 
+    function whatsapp(){
+        window.location.href = "https://wa.me/541140944120";
+    }
+
     if(isSuccess){
         return (
             <>
@@ -183,7 +200,19 @@ export default function CartPage(){
                         <ColumnsWrapper>
                             <Box>
                                 <h1>Gracias por tu compra!</h1>
-                                <p>Te enviaremos por email los datos de tu compra</p>
+                                <p>Te podes comunicar para poder retirar tu compra al número: 1140944120</p>
+                                <p>Nuestro local esta ubicado en Av. Santa fe 4549</p>
+                                <p>Horario de Atención: 
+                                <br></br>
+                                Lunea a Viernes de 10:00 a 19:00hs
+                                <br></br>
+                                Sábados de 10:30 a 15:00hs</p>
+                                <p>En la sección <strong>Tu Cuenta → Ordenes</strong> podes visualizar tu orden, cualquier consulta comunicate con nosotros</p>
+                                <ButtonWhatsapp
+                                    onClick={whatsapp}>
+                                        <img src="https://www.candy-ink.com/wp-content/uploads/2020/09/boton-whatsapp.png"/>
+
+                                </ButtonWhatsapp>
                             </Box>
                         </ColumnsWrapper>
                         <WhatsappIcon />
@@ -244,7 +273,7 @@ export default function CartPage(){
                                             ))}
                                         <tr>
                                             <td></td>
-                                            <td></td>
+                                            <Total>Total de la compra: </Total>
                                             <Total>${total}</Total>
                                         </tr>
                                 </tbody>

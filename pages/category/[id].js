@@ -47,18 +47,13 @@ export default function CategoryPage({
     const defaultSorting = "_id-desc";
     const defaultFilterValues = category.properties.map(p => ({name: p.name, value: "all"}));
     const [products, setProducts] = useState(originalProducts);
-    const [filtersValues, setFiltersValues] = useState(defaultFilterValues);
+    const [filtersValue, setFiltersValue] = useState(defaultFilterValues);
     const [sort, setSort] = useState(defaultSorting);
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [filtersChanged, setFiltersChanged] = useState(false);
 
-    function handleFilterChange(filterName, filterValue){
-        setFiltersValues(prev => {
-            return prev.map(p => ({
-                name: p.name,
-                value: p.name === filterName ? filterValue : p.value,
-            })); 
-        })
+    function handleFilterChange(filterValue){
+        setFiltersValue(filterValue)
         setFiltersChanged(true);
     }
 
@@ -71,17 +66,21 @@ export default function CategoryPage({
         const params = new URLSearchParams;
         params.set("categories", catIds.join(","));
         params.set("sort", sort);
-        filtersValues.forEach(filter => {
-            if(filter.value !== "all"){
-                params.set(filter.name, filter.value);
-            }
-        })
         const url = "/api/products?" + params.toString();
         axios.get(url).then(res => {
-            setProducts(res.data);
+            const products = res.data;
+            const filterProducts = [];
+            for(let i = 0; i < products.length; i++){
+                Object.keys(products[i].properties[category.properties[0].name]).forEach(property => {
+                    if(property === filtersValue){
+                        filterProducts.push(products[i]);
+                    }
+                })
+            }
+            setProducts(filterProducts);
             setLoadingProducts(false);
         })
-    }, [filtersValues, sort, filtersChanged]);
+    }, [filtersValue, sort, filtersChanged]);
 
     return (
         <>
@@ -90,14 +89,13 @@ export default function CategoryPage({
                 <CategoryHeader>
                     <h1>{category.name}</h1>
                     <FiltersWrapper>
-                        {category.properties.map(prop => (
-                        <Filter key={prop.name}>
-                            <span>{prop.name}: </span>
+                        <Filter key={category.properties[0].name}>
+                            <span>{category.properties[0].name}: </span>
                             <select 
-                                onChange={(e) => handleFilterChange(prop.name, e.target.value)}
-                                value={filtersValues.find(f => f.name === prop.name).value}>
+                                onChange={(e) => handleFilterChange(e.target.value)}
+                                value={filtersValue}>
                                 <option value="all">Todos</option>
-                                {prop.values.map(value => (
+                                {category.properties[0].values.map(value => (
                                         <option
                                             key={value}
                                             value={value}>{value}
@@ -105,7 +103,6 @@ export default function CategoryPage({
                                 ))}
                             </select>
                         </Filter>
-                    ))}
                     <Filter>
                         <span>Ordenar por:</span>
                         <select 
