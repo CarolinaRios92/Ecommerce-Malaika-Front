@@ -5,9 +5,10 @@ import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/BarsIcon";
 import SearchIcon from "./icons/SearchIcon";
+import { secondary } from "@/lib/colors";
 
 const StyleHeader = styled.header`
-    background-color: #222;
+    background-color: ${secondary};
     position: sticky;
     top:0;
     z-index: 10;
@@ -18,32 +19,28 @@ const Logo = styled(Link)`
     text-decoration:none;
     position:relative;
     z-index: 3;
-    font-size: 1.6rem;
-`;
-
-const BorderLogo = styled.div`
-    border-bottom: 2px solid #fff;
-    padding-bottom: 1px;
+    font-size: 1.8rem;
 `;
 
 const Wrapper = styled.div`
     display:flex;
     justify-content: space-between;
     padding: 20px 0;
+    align-items: center;
 `;
 
 const StyledNav = styled.nav`
     ${props => props.mobileNavActive 
         ? `display: block;` 
         : `display: none;`}
-    gap: 15px;
+    gap: 20px;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     padding: 70px 20px 20px;
-    background-color: #222;
+    background-color: ${secondary};
     @media screen and (min-width: 768px){
         display: flex;
         position: static;
@@ -107,11 +104,9 @@ export default function Header(){
         <StyleHeader>
             <Center>
                 <Wrapper>
-                    <BorderLogo>
-                        <Logo href={"/"}>
-                            Malaika
-                        </Logo>
-                    </BorderLogo>
+                    <Logo href={"/"}>
+                        Malaika
+                    </Logo>
                     
                     <StyledNav mobileNavActive={mobileNavActive}>
                         <NavLink href={"/"}>Home</NavLink>

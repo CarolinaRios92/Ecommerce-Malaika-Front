@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Center from "./Center";
 import ButtonLink from "./ButtonLink";
-import CartIcon from "./icons/CartIcon";
-import FlyingButton from "./FlyingButton";
 import { RevealWrapper } from "next-reveal";
+import { secondary } from "@/lib/colors";
 
 const Bg = styled.div`
-  background-color: #222;
+  background-color: ${secondary};
   color: #fff;
   padding: 50px 0;
 `;
@@ -14,7 +13,7 @@ const Bg = styled.div`
 const Title = styled.h1`
     margin:0;
     font-weight:normal;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding-top: 10px;
     @media screen and (min-width: 768px) {
         font-size: 3rem;
@@ -24,13 +23,14 @@ const Title = styled.h1`
 
 const Desc = styled.p`
     color: #aaa;
-    font-size:.8rem;
+    font-size:.9rem;
 `;
 
 const ColumnsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    gap: 40px;
+    padding: 0px 60px;
+    gap: 5px;
     img.main {
         max-width: 100%;
         max-height: 280px;
@@ -91,7 +91,6 @@ export default function Featured({product}){
                                     <ButtonsWrapper>
                                         <ButtonLink 
                                             href={"/product/"+product._id} 
-                                            outline={1} 
                                             white={1}>
                                             Mas información
                                         </ButtonLink>
