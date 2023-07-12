@@ -14,7 +14,10 @@ const ProductWrapper = styled.div`
         width: 100%;
         text-align: center;
         justify-content: center;
-    }
+    };
+    ${props => props.stock 
+        ? `opacity: 1`
+        : `opacity: 0.5`};
 `;
 
 const WhiteBox = styled(Link)`
@@ -27,9 +30,7 @@ const WhiteBox = styled(Link)`
     justify-content: center;
     border-radius: 10px;
     position: relative;
-    ${props => props.stock 
-        ? `opacity: 1`
-        : `opacity: 0.4`};
+    
     svg{
         width: 18px;
     }
@@ -123,8 +124,8 @@ export default function ProductBox({_id, title, price, images, properties, wishe
     }
 
     return (
-        <ProductWrapper>
-            <WhiteBox stock={unitStock.length > 0} href={url}>
+        <ProductWrapper stock={unitStock.length > 0}>
+            <WhiteBox href={url}>
                 <div>
                     <WishlistButton 
                         wished={isWhished} 

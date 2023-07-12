@@ -42,6 +42,8 @@ export default function AccountPage () {
     const [activeTab, setActiveTab] = useState("Ordenes");
     const [orders, setOrders] = useState([]);
 
+    console.log(wishedProducts);
+    
     async function logout(){
         await signOut({
             callbackUrl: process.env.NEXT_PUBLIC_URL
@@ -111,8 +113,8 @@ export default function AccountPage () {
                                                         <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
                                                     ))}
                                                 </WishedProductsGrid>
-                                                {wishedProducts.length === 0 && (
-                                                    <>
+                                                    {wishedProducts.length === 0 && (
+                                                        <>
                                                         {session && (
                                                             <p>Tu lista de favoritos esta vacia!</p>
                                                         )}

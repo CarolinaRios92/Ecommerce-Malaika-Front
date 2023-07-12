@@ -10,6 +10,8 @@ import { WishedProduct } from "@/models/WishedProduct";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import WhatsappIcon from "@/components/WhatsappIcon";
+import { useEffect, useState } from "react";
+import { set } from "mongoose";
 
 const CategoryGrid = styled.div`
     display: grid;
@@ -51,13 +53,23 @@ const ShowAllSquare = styled(Link)`
 `;
 
 export default function CategoriesPage({mainCategories, categoriesProducts, wishedProducts=[]}){
+    let activeCategories = [];
+
+        for(let i = 0; i < mainCategories.length; i++){
+            if(categoriesProducts[mainCategories[i]._id].length > 0){
+                activeCategories.push(mainCategories[i])
+            }
+        }
+
+    console.log(activeCategories);
 
     return (
         <>
             <Header />
             <Center>
-                {mainCategories?.map(categorie => (
-                    <CategoryWrapper key={categorie._id}>
+                {activeCategories?.map(categorie => 
+                    (
+                        <CategoryWrapper key={categorie._id}>
                         <CategoryTitle>
                             <h2>{categorie.name}</h2>
                             <Link href={"/category/"+categorie._id}>
@@ -78,7 +90,7 @@ export default function CategoriesPage({mainCategories, categoriesProducts, wish
                             </RevealWrapper>
                         </CategoryGrid>
                     </CategoryWrapper>
-                ))
+                    ))
                 }
                 <WhatsappIcon />
             </Center>
