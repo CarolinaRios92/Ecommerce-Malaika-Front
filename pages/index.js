@@ -8,15 +8,20 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { Setting } from "@/models/Setting";
 import WhatsappIcon from "@/components/WhatsappIcon";
+import styled from "styled-components";
+
+const General = styled.div`
+  margin-bottom: 100px;
+`;
 
 export default function HomePage({featuredProduct, newProducts, wishedNewProducts}){
   return (
-      <div>
+      <General>
         <Header />
         <Featured product={featuredProduct}/>
         <NewProducts products={newProducts} wishedProducts={wishedNewProducts}/>
         <WhatsappIcon />        
-      </div>
+      </General>
   )
 }
 

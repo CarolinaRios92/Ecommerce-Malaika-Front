@@ -10,6 +10,7 @@ const ButtonWhatsappIcon = styled.button`
   bottom: 30px;
   right: 30px;
   z-index: 99;
+  margin-top:50px;
   background: transparent;
   img{
     height: 100%;

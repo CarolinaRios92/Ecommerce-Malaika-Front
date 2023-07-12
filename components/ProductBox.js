@@ -44,6 +44,7 @@ const Title = styled(Link)`
     font-weight: normal;
     font-size: 1rem;
     margin: 0;
+    padding-bottom: 0;
     color: inherit;
     text-decoration: none;
 `;
@@ -53,7 +54,10 @@ const ProductInfoBox = styled.div`
 `;
 
 const PriceRow = styled.div`
-    display: block;
+    display: flex;
+    gap: 5px;
+    padding-top: 0;
+    margin-top:0;
     @media screen and (min-width: 768px) {
         display: flex;
         gap: 5px;
@@ -96,6 +100,7 @@ const WithoutStock = styled.p`
     color: rgb(185 28 28);
     font-size: 0.8rem;
     font-weight: 600;
+    text-align: right;
 `
 
 export default function ProductBox({_id, title, price, images, properties, wished=false, onRemoveFromWishList=() =>{}}){
