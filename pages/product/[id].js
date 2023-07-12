@@ -6,10 +6,8 @@ import { Product } from "@/models/Product";
 import styled from "styled-components";
 import WhiteBox from "@/components/WhiteBox";
 import ProductImages from "@/components/ProductImages";
-import Button from "@/components/Button";
 import CartIcon from "@/components/icons/CartIcon";
-import { useContext, useEffect , useState} from "react";
-import { CartContext } from "@/components/CartContext";
+import {useEffect , useState} from "react";
 import FlyingButton from "@/components/FlyingButton";
 import WhatsappIcon from "@/components/WhatsappIcon";
 import axios from "axios";
@@ -59,6 +57,11 @@ const SelectOptions = styled.div`
     display: flex;
     gap: 5px;
     margin-bottom: 10px;
+`;
+
+const Text = styled.p`
+    font-weight: 600;
+    font-size: 1.1rem;
 `;
 
 export default function ProductPage({product}){
@@ -111,36 +114,40 @@ export default function ProductPage({product}){
                         {Object.keys(category).length > 0 
                             ? (
                                 <div>
-                                    <PropertiesTitle>{category?.properties[0].name}:</PropertiesTitle>
-                                    
                                         {optionProducts.length > 0 && (
-                                            <SelectOptions>
-                                                <Select
-                                                    required
-                                                    defaultValue="default"
-                                                    onClick={(e) => setproductProperty(e.target.value)}>
-                                                    <option
-                                                        disabled
-                                                        value="default">
-                                                        Selecciona
-                                                    </option>
-                                                    {optionProducts.map(optionSelect => (
-                                                            <option
-                                                                key={optionSelect}
-                                                                value={optionSelect}>
-                                                                    {optionSelect}
-                                                                </option>
-                                                    ))}
-                                                </Select>
-                                                <Input
-                                                    type="number"
-                                                    max={unitsOptionProduct[optionProducts.indexOf(productProperty)]}
-                                                    min={1}
-                                                    value={unitsSelected}
-                                                    onChange={(e) => setUnitsSelected(e.target.value)}/>
-                                                <Stock>(Stock: {unitsOptionProduct[optionProducts.indexOf(productProperty)]} unidades)</Stock>
-                                            </SelectOptions>
+                                            <div>
+                                                <PropertiesTitle>{category?.properties[0].name}:</PropertiesTitle>
+                                                <SelectOptions>
+                                                    <Select
+                                                        required
+                                                        defaultValue="default"
+                                                        onClick={(e) => setproductProperty(e.target.value)}>
+                                                        <option
+                                                            disabled
+                                                            value="default">
+                                                            Selecciona
+                                                        </option>
+                                                        {optionProducts.map(optionSelect => (
+                                                                <option
+                                                                    key={optionSelect}
+                                                                    value={optionSelect}>
+                                                                        {optionSelect}
+                                                                    </option>
+                                                        ))}
+                                                    </Select>
+                                                    <Input
+                                                        type="number"
+                                                        max={unitsOptionProduct[optionProducts.indexOf(productProperty)]}
+                                                        min={1}
+                                                        value={unitsSelected}
+                                                        onChange={(e) => setUnitsSelected(e.target.value)}/>
+                                                    <Stock>(Stock: {unitsOptionProduct[optionProducts.indexOf(productProperty)]} unidades)</Stock>
+                                                </SelectOptions>
+                                            </div>
                                         )}
+                                        {optionProducts.length === 0 && (
+                                            <Text>Sin Stock</Text>
+                                        )}  
                                 </div>) 
                             : 
                                 <Spinner fullWidth={false}/>
@@ -151,18 +158,20 @@ export default function ProductPage({product}){
                                 <Price>$ {product.price}</Price>
                             </div>
                             <div>
-                                <FlyingButton main 
-                                    productId={product._id} 
-                                    src={product.images?.[0]} 
-                                    property={productProperty} 
-                                    units={unitsSelected}
-                                    image={product.images[0]}
-                                    title={product.title}
-                                    price={product.price}
-                                    nameProperty={product.nameProperty}>
-                                        <CartIcon />
-                                        Agregar al carrito
-                                </FlyingButton>
+                                {optionProducts.length > 0 && (
+                                    <FlyingButton main 
+                                        productId={product._id} 
+                                        src={product.images?.[0]} 
+                                        property={productProperty} 
+                                        units={unitsSelected}
+                                        image={product.images[0]}
+                                        title={product.title}
+                                        price={product.price}
+                                        nameProperty={product.nameProperty}>
+                                            <CartIcon />
+                                            Agregar al carrito
+                                    </FlyingButton>
+                                )} 
                             </div>
                         </PriceRow>
                     </div>   
