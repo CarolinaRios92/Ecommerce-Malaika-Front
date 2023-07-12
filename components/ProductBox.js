@@ -27,6 +27,12 @@ const WhiteBox = styled(Link)`
     justify-content: center;
     border-radius: 10px;
     position: relative;
+    ${props => props.stock 
+        ? `opacity: 1`
+        : `opacity: 0.4`};
+    svg{
+        width: 18px;
+    }
     img{
         max-width: 100%;
         max-height: 110px
@@ -52,14 +58,14 @@ const PriceRow = styled.div`
         gap: 5px;
     }
     align-items: center;
-    justify-content: space-between;
-    margin-top: 2px;
 `;
 
 const Price = styled.div`
     font-size: 1rem;
     font-weight: 400;
     text-align: right;
+    margin-top:0;
+    padding-top:0;
     @media screen and (min-width: 768px) {
         font-size: 1.2rem;
         font-weight: 600;
@@ -85,9 +91,24 @@ const WishlistButton = styled.button`
     }
 `;
 
-export default function ProductBox({_id, title, price, images, wished=false, onRemoveFromWishList=() =>{}}){
+const WithoutStock = styled.p`
+    color: rgb(185 28 28);
+    font-size: 0.8rem;
+    font-weight: 600;
+`
+
+export default function ProductBox({_id, title, price, images, properties, wished=false, onRemoveFromWishList=() =>{}}){
     const [isWhished, setIsWished] = useState(wished);
     const url = "/product/"+_id;
+
+    let unitStock = [];
+
+    for(const property in properties[Object.keys(properties)[0]]){
+        console.log()
+        if(parseInt(properties[Object.keys(properties)[0]][property]) > 0){
+            unitStock.push(property);
+        }
+    }
 
     function addToWishlist(e){
         e.preventDefault();
@@ -103,7 +124,7 @@ export default function ProductBox({_id, title, price, images, wished=false, onR
 
     return (
         <ProductWrapper>
-            <WhiteBox href={url}>
+            <WhiteBox stock={unitStock.length > 0} href={url}>
                 <div>
                     <WishlistButton 
                         wished={isWhished} 
@@ -121,6 +142,9 @@ export default function ProductBox({_id, title, price, images, wished=false, onR
                     <Price>
                         $ {price}
                     </Price>
+                    {unitStock.length === 0 && (
+                        <WithoutStock>(Sin Stock)</WithoutStock>
+                    )}
                 </PriceRow>
             </ProductInfoBox>
         </ProductWrapper>
