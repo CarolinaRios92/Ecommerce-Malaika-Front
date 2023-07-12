@@ -15,12 +15,16 @@ import SingleOrder from "@/components/SingleOrder";
 import WhatsappIcon from "@/components/WhatsappIcon";
 
 const ColsWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1.3fr .7fr;
+    display: flex;
+    flex-direction: column;
     gap: 40px;
     margin: 40px 0;
     p {
         margin: 0 0 10px 0;
+    }
+    @media screen and (min-width: 768px){
+        display: grid;
+        grid-template-columns: .7fr 1.3fr;
     }
 `;
 
@@ -94,63 +98,6 @@ export default function AccountPage () {
             <Center>
                 <ColsWrapper>
                     <div>
-                        <RevealWrapper delay={0}>
-                            <WhiteBox>
-                                <Tabs 
-                                    tabs={["Ordenes", "Favoritos"]} 
-                                    active={activeTab} 
-                                    onChange={setActiveTab}/>
-
-                                {activeTab === "Favoritos" && (
-                                    <>
-                                        {!wishlistLoaded && (
-                                            <Spinner fullWidth={true} />
-                                        )}
-                                        {wishlistLoaded && (
-                                            <>
-                                                <WishedProductsGrid>
-                                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
-                                                        <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
-                                                    ))}
-                                                </WishedProductsGrid>
-                                                    {wishedProducts.length === 0 && (
-                                                        <>
-                                                        {session && (
-                                                            <p>Tu lista de favoritos esta vacia!</p>
-                                                        )}
-                                                        {!session && (
-                                                            <p>Registrate para agregar productos a tu lista de favoritos!</p>
-                                                        )}
-                                                    </>    
-                                                )}
-                                            </>  
-                                        )}
-                                    </>
-                                )}
-
-                                {activeTab === "Ordenes" && (
-                                    <>
-                                        {!ordersLoaded && (
-                                            <Spinner fullWidth={true} />
-                                        )}
-                                        {ordersLoaded && (
-                                            <div>
-                                                {orders.length === 0 && (
-                                                    <p>Logeate para poder ver tus ordenes</p>
-                                                )}
-                                                {orders.length > 0 && orders.map(order => (
-                                                    <SingleOrder key={order._id} {...order}/>
-                                                )) }
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                                
-                                
-                            </WhiteBox>
-                        </RevealWrapper>
-                    </div>
-                    <div>
                         <RevealWrapper delay={100}>
                             <WhiteBox>
                                 <h2>{session ? "Datos Cuenta" : "Login"}</h2>
@@ -208,6 +155,64 @@ export default function AccountPage () {
                             </WhiteBox>
                         </RevealWrapper>
                     </div>
+                    <div>
+                        <RevealWrapper delay={0}>
+                            <WhiteBox>
+                                <Tabs 
+                                    tabs={["Ordenes", "Favoritos"]} 
+                                    active={activeTab} 
+                                    onChange={setActiveTab}/>
+
+                                {activeTab === "Favoritos" && (
+                                    <>
+                                        {!wishlistLoaded && (
+                                            <Spinner fullWidth={true} />
+                                        )}
+                                        {wishlistLoaded && (
+                                            <>
+                                                <WishedProductsGrid>
+                                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
+                                                        <ProductBox key={wp._id} {...wp} wished={true} onRemoveFromWishList={productRemovedFromWishlist} />
+                                                    ))}
+                                                </WishedProductsGrid>
+                                                    {wishedProducts.length === 0 && (
+                                                        <>
+                                                        {session && (
+                                                            <p>Tu lista de favoritos esta vacia!</p>
+                                                        )}
+                                                        {!session && (
+                                                            <p>Registrate para agregar productos a tu lista de favoritos!</p>
+                                                        )}
+                                                    </>    
+                                                )}
+                                            </>  
+                                        )}
+                                    </>
+                                )}
+
+                                {activeTab === "Ordenes" && (
+                                    <>
+                                        {!ordersLoaded && (
+                                            <Spinner fullWidth={true} />
+                                        )}
+                                        {ordersLoaded && (
+                                            <div>
+                                                {orders.length === 0 && (
+                                                    <p>Logeate para poder ver tus ordenes</p>
+                                                )}
+                                                {orders.length > 0 && orders.map(order => (
+                                                    <SingleOrder key={order._id} {...order}/>
+                                                )) }
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                
+                                
+                            </WhiteBox>
+                        </RevealWrapper>
+                    </div>
+                    
                 </ColsWrapper>
                 <WhatsappIcon />
                 
